@@ -1,0 +1,94 @@
+{  
+    "lists": [
+        {   
+            "id": 123,
+            "name": "house management",
+            "tasks": [
+                {
+                    "id": 1,
+                    "name": "Do laundry",
+                    "status": "Open",
+                    "isHidden": false,
+                    "isDragged": false,
+                    "isSorted": false
+                },
+                {
+                    "id": 2,
+                    "name": "Make coffee",
+                    "status": "Done",
+                    "isHidden": false,
+                    "isDragged": false,
+                    "isSorted": false
+                },
+                {
+                    "id": 3,
+                    "name": "Clean floor",
+                    "status": "Open",
+                    "isHidden": false,
+                    "isDragged": false,
+                    "isSorted": false
+                }
+            ]
+        },
+        {   
+            "id": 456,
+            "name": "Fittness",
+            "tasks": [
+                {
+                    "id": 4,
+                    "name": "take a walk",
+                    "status": "Done",
+                    "isHidden": false,
+                    "isDragged": false,
+                    "isSorted": false
+                },
+                {
+                    "id": 5,
+                    "name": "Sleep",
+                    "status": "Open",
+                    "isHidden": false,
+                    "isDragged": false,
+                    "isSorted": false
+                },
+                {
+                    "id": 6,
+                    "name": "Buy new sport shirt",
+                    "status": "Open",
+                    "isHidden": false,
+                    "isDragged": false,
+                    "isSorted": false
+                }
+            ]
+        },
+        {   
+            "id": 789,
+            "name": "bureaucracy",
+            "tasks": [
+                {
+                    "id": 7,
+                    "name": "Do bills",
+                    "status": "Done",
+                    "isHidden": false,
+                    "isDragged": false,
+                    "isSorted": false
+                },
+                {
+                    "id": 8,
+                    "name": "Find papers",
+                    "status": "Open",
+                    "isHidden": false,
+                    "isDragged": false,
+                    "isSorted": false
+                },
+                {
+                    "id": 9,
+                    "name": "Pet the pet",
+                    "status": "Done",
+                    "isHidden": false,
+                    "isDragged": false,
+                    "isSorted": false
+                }
+            ]
+        }
+    ]
+}

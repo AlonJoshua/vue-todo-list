@@ -1,0 +1,9 @@
+{
+    "SVGFiles": {
+        "DONE": "require(./src/assets/done.svg)",
+        "UNDONE": "require(./src/assets/undone.svg)",
+        "UNDO": "require(./src/assets/undo.svg)",
+        "REMOVE": "require(./src/assets/remove.svg)",
+        "DRAG": "require(./src/assets/drag.svg)"
+    }
+}
