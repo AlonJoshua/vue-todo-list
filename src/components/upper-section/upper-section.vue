@@ -20,6 +20,7 @@ export default {
         align-items: center;
         .app-name {
             font-size: 2em;
+            margin-top: 20px;
         }
     }
 </style>

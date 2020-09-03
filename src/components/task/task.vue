@@ -61,7 +61,8 @@ export default {
                 UNDONE: require("../../assets/undone.svg"),
                 UNDO: require("../../assets/undo.svg"),
                 REMOVE: require("../../assets/remove.svg"),
-                DRAG: require("../../assets/drag.svg")
+                DRAG: require("../../assets/drag.svg"),
+                EDIT2: require("../../assets/edit2.svg")
             },
             statuses: {
                 OPEN: "Open",
@@ -89,6 +90,7 @@ export default {
     display: flex;
     width: 25px;
     height: 25px;
+    cursor: pointer;
 }
 
 .task-wrapper {
@@ -101,7 +103,7 @@ export default {
     justify-content: space-evenly;
     align-items: center;
     .drag-icon {
-        cursor: pointer;
+        cursor: grab;
         transition: 0.25s;
     }
     .is-draggable {
@@ -110,9 +112,14 @@ export default {
     }
    
     .task-name-textarea {
+        border: none;
         border-radius: 3px;
         display: flex;
         resize: none;
+        text-align: center;
+    }
+    .task-name-textarea:hover {
+        cursor: url("../../assets/edit3.svg") -5 120, pointer;
     }
     .status {
         display: flex;

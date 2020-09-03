@@ -45,6 +45,7 @@ export default {
                 appName: "Tasks management by Alon Joshua"
             },
             lists: dataJson.lists,
+            listDefaultName: "tasks",
             sortOptions: {
                 name: "sort by",
                 options: [
@@ -114,8 +115,11 @@ export default {
             });
         },
         changeListName(value, list) {
-            list.name = value;
-            console.log(list);
+            if (!value) {
+                list.name = this.listDefaultName;
+            } else {
+                list.name = value;
+            }
         },
         deleteList(index) {
             console.log("index: ", index);
@@ -206,6 +210,7 @@ export default {
     .lists-container {
         display: flex;
         flex-wrap: wrap;
+        justify-content: space-evenly;
         flex: 0 0 33.333%;
     }
 }
