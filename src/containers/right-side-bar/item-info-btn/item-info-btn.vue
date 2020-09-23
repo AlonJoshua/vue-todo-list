@@ -1,0 +1,31 @@
+<template>
+  <div class="item-info-btn-wrapper">
+      <div class="item-info-title" readonly>See item details</div>
+  </div>
+</template>
+
+<script>
+export default {
+    data() {
+        return {
+
+        }
+    }
+}
+</script>
+
+<style lang="scss" scoped>
+.item-info-btn-wrapper {
+    display: flex;
+    width: fit-content;
+    margin-top: 9px;
+    user-select: none;
+    .item-info-title {
+        font-size: 0.9em;
+        color: rgb(149, 176, 212);
+    }
+}
+.item-info-btn-wrapper:hover {
+    cursor: pointer;
+}
+</style>

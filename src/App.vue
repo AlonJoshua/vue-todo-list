@@ -1,8 +1,15 @@
 <template>
     <div class="app-wrapper">
-        <upper-section :headerData="headerData"> </upper-section>
+        <main-nav :mainNavData="mainNavData"> </main-nav>
+        <div class="side-bars-wrapper">
+            <left-bar :currentViewData="currentViewData"></left-bar>
+            <middle-line></middle-line>
+            <right-bar :currentViewData="currentViewData"
+                       :sortOptions="sortOptions">
+            </right-bar>     
+        </div>              
         <div class="lists-container">
-            <list 
+            <list v-show="!lists"
                   v-for="(list, index) in lists"
                   :key="index"
                   :list="list"
@@ -21,7 +28,7 @@
                   v-on:dropHandler="dropHandler"
                   v-on:dragEndHandler="dragEndHandler">
             </list>
-            <new-list-option v-on:addNewList="addNewList"></new-list-option>
+            <new-list-option v-show="!lists" v-on:addNewList="addNewList"></new-list-option>
         </div>
     </div>
 </template>
@@ -29,7 +36,10 @@
 <script>
 import list from "./containers/list/list.vue";
 import newListOption from "./components/new-list-option/new-list-option.vue"
-import upperSection from "./components/upper-section/upper-section.vue";
+import mainNav from "./containers/main-nav/main-nav.vue";
+import leftBar from "./containers/left-side-bar/left-side-bar.vue"
+import rightBar from "./containers/right-side-bar/right-side-bar.vue"
+import middleLine from "./components/middle-line/middle-line.vue"
 import dataJson from "../data.json";
 
 export default {
@@ -37,13 +47,18 @@ export default {
     components: {
         list,
         newListOption,
-        upperSection,
+        mainNav,
+        leftBar,
+        rightBar,
+        middleLine
     },
     data: () => {
         return {
-            headerData: {
-                appName: "Tasks management by Alon Joshua"
+            mainNavData: {
+                appName: "Tasks management by Alon Joshua",
+                homeBtnName: "Dashboard"
             },
+            currentViewData: dataJson.lists,
             lists: dataJson.lists,
             listDefaultName: "tasks",
             sortOptions: {
@@ -59,7 +74,8 @@ export default {
             },
             taskStatuses: {
                 DONE: "Done",
-                OPEN: "Open" 
+                OPEN: "Open",
+                CLOSE: "Close"
             },
             currDraggedEl: null,
             currDragOverEl: null,
@@ -75,6 +91,9 @@ export default {
         };
     },
     methods: {
+        ChangeToItemView() {
+            // change to this item view
+        },
         addNewTask(list) {
             list.tasks.unshift({
                 id: Date.now(),
@@ -202,11 +221,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;500&display=swap');
 .app-wrapper {
     display: flex;
+    font-family: 'Roboto', sans-serif;;
     align-items: center;
     flex-direction: column;
     height: 100%;
+    background-color:	rgb(242, 243, 245);
+    .side-bars-wrapper {
+        display: flex;
+        justify-content: space-evenly;
+    }
     .lists-container {
         display: flex;
         flex-wrap: wrap;
