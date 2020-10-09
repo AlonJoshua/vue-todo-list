@@ -1,6 +1,7 @@
 <template>
     <div class="main-nav">
-        <div class="back-home-btn-wrapper">
+        <div class="back-home-btn-wrapper"
+             @click="dashboardBtnHandler">
             <label for="back-home-btn-title" class="back-home-btn-title">{{ mainNavData.homeBtnName }}</label>
             <div class="back-home-btn-bottom-marker"></div>
         </div>
@@ -11,6 +12,11 @@
 export default {
     props: {
         mainNavData: Object
+    },
+    methods: {
+        dashboardBtnHandler() {
+            this.$emit("dashboardBtnHandler");
+        }
     }
 }
 </script>
@@ -30,6 +36,9 @@ export default {
             .back-home-btn-title {
                 color: rgb(89, 92, 102);
                 font-size: 1.6em;
+            }
+            .back-home-btn-title:hover {
+                cursor: pointer;
             }
             .back-home-btn-bottom-marker {
                 height: 3px;

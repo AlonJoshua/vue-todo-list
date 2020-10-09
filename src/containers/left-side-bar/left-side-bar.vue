@@ -1,6 +1,7 @@
 <template>
   <div class="left-bar-wrapper">
-      <over-view :currentView="currentView"></over-view>
+      <over-view :leftBarCurrViewData="leftBarCurrViewData">          
+      </over-view>
       <status-card></status-card>
       <status-card></status-card>
       <status-card></status-card>
@@ -16,7 +17,13 @@ export default {
         StatusCard
     },
     props: {
-        currentView: {}
+        leftBarCurrViewData: {}
+    },
+    methods: {
+        dashboardBtnHandler() {
+            console.log("click");
+            this.$emit("dashboardBtnHandler");
+        }
     }
 }
 </script>

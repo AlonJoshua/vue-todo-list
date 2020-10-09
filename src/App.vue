@@ -1,41 +1,28 @@
+// 4) Rebuild CRUD system
+// 5) Rebuild sorted view option
+// 6) Rebuild drag and drop functionality
+// 7) Design icons for different behaviors
+// 8) Animate client view on enter/reload, poiniting items/icons, progressbar.
+
+
+
 <template>
     <div class="app-wrapper">
-        <main-nav :mainNavData="mainNavData"> </main-nav>
+        <main-nav :mainNavData="mainNavData"
+                  v-on:dashboardBtnHandler="ChangeToItemView(defaultMainView)"> 
+        </main-nav>
         <div class="side-bars-wrapper">
-            <left-bar :currentViewData="currentViewData"></left-bar>
+            <left-bar :leftBarCurrViewData="currBarsView"></left-bar>
             <middle-line></middle-line>
-            <right-bar :currentViewData="currentViewData"
-                       :sortOptions="sortOptions">
+            <right-bar :rightBarCurrViewData="currBarsView"
+                       :sortOptions="sortOptions"
+                       v-on:itemDetailsClickHandler="ChangeToItemView($event)">
             </right-bar>     
         </div>              
-        <div class="lists-container">
-            <list v-show="!lists"
-                  v-for="(list, index) in lists"
-                  :key="index"
-                  :list="list"
-                  :sortOptions="sortOptions"
-                  
-                  v-on:addNewTask="addNewTask($event)"
-                  v-on:setListView="setListView($event)"
-                  v-on:changeListName="changeListName($event, list)"
-                  v-on:deleteList="deleteList(index)"
-                  v-on:statusChange="statusChange($event)"
-                  v-on:removeTask="removeTask($event, list)"
-                  v-on:setIsDragged="setIsDragged($event)"
-                  v-on:dragStartHandler="dragStartHandler($event, list)"
-                  v-on:dragEnterHandler="dragEnterHandler({$event, list})"
-                  v-on:dragLeaveHandler="dragLeaveHandler($event)"
-                  v-on:dropHandler="dropHandler"
-                  v-on:dragEndHandler="dragEndHandler">
-            </list>
-            <new-list-option v-show="!lists" v-on:addNewList="addNewList"></new-list-option>
-        </div>
     </div>
 </template>
 
 <script>
-import list from "./containers/list/list.vue";
-import newListOption from "./components/new-list-option/new-list-option.vue"
 import mainNav from "./containers/main-nav/main-nav.vue";
 import leftBar from "./containers/left-side-bar/left-side-bar.vue"
 import rightBar from "./containers/right-side-bar/right-side-bar.vue"
@@ -45,8 +32,6 @@ import dataJson from "../data.json";
 export default {
     name: "App",
     components: {
-        list,
-        newListOption,
         mainNav,
         leftBar,
         rightBar,
@@ -58,8 +43,9 @@ export default {
                 appName: "Tasks management by Alon Joshua",
                 homeBtnName: "Dashboard"
             },
-            currentViewData: dataJson.lists,
-            lists: dataJson.lists,
+            lastJsonData: dataJson,
+            currBarsView: null,
+            defaultMainView: null,
             listDefaultName: "tasks",
             sortOptions: {
                 name: "sort by",
@@ -91,8 +77,12 @@ export default {
         };
     },
     methods: {
-        ChangeToItemView() {
+        ChangeToItemView(itemData) {
             // change to this item view
+            if (!itemData.items) {
+                itemData.items = [];
+            }
+            this.currBarsView = itemData;
         },
         addNewTask(list) {
             list.tasks.unshift({
@@ -216,6 +206,29 @@ export default {
         }
     },
     computed: {
+        getItemsStatusesCount() {
+            let itemsStatusesCount = {
+                OPEN: 0,
+                CLOSE: 0
+            }
+            for (let i = 0; i < this.currBarsView.items.length; i++) {
+                if (this.currBarsView.items[i].status === "Open") {
+                    itemsStatusesCount.OPEN ++;
+                }
+                else if (this.currBarsView.items[i].status === "Done") {
+                    itemsStatusesCount.CLOSE ++;
+                }
+            }
+            return itemsStatusesCount;
+        }
+    },
+    created() {
+        if (this.defaultMainView === null) {
+            this.defaultMainView = this.lastJsonData;
+        }
+        if (this.currBarsView === null) {
+            this.currBarsView = this.lastJsonData;
+        }
     }
 };
 </script>
@@ -241,3 +254,10 @@ export default {
     }
 }
 </style>
+
+// Backlog:
+// 1) Pass current item data as props to right and left bars X
+// 2) Create a function that loops through current items list, and returns an object with statuses data. X
+// 2.1) Status Icon shows depend on status (In App.vue, pass props through computed that prepared all the data
+// for passing it down properly) X
+// 3) Build a progress bar that shows how much of the current project view is finished X

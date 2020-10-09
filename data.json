@@ -1,9 +1,10 @@
-{  
-    "lists": [
+{   "name": "Projects",
+    "items": [
         {   
             "id": 123,
-            "name": "house management",
-            "tasks": [
+            "name": "House management",
+            "status" : "Open",
+            "items": [
                 {
                     "id": 1,
                     "name": "Do laundry",
@@ -33,7 +34,8 @@
         {   
             "id": 456,
             "name": "Fittness",
-            "tasks": [
+            "status": "Open",
+            "items": [
                 {
                     "id": 4,
                     "name": "take a walk",
@@ -62,8 +64,9 @@
         },
         {   
             "id": 789,
-            "name": "bureaucracy",
-            "tasks": [
+            "name": "Bureaucracy",
+            "status": "Done",
+            "items": [
                 {
                     "id": 7,
                     "name": "Do bills",
@@ -75,7 +78,7 @@
                 {
                     "id": 8,
                     "name": "Find papers",
-                    "status": "Open",
+                    "status": "Done",
                     "isHidden": false,
                     "isDragged": false,
                     "isSorted": false

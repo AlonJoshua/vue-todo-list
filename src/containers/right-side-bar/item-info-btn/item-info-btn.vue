@@ -1,14 +1,23 @@
 <template>
-  <div class="item-info-btn-wrapper">
+  <div class="item-info-btn-wrapper"
+       @click="itemDetailsClickHandler">
       <div class="item-info-title" readonly>See item details</div>
   </div>
 </template>
 
 <script>
 export default {
+    props: {
+        itemData: {}
+    },
     data() {
         return {
 
+        }
+    },
+    methods: {
+        itemDetailsClickHandler() {
+            this.$emit("itemDetailsClickHandler", this.itemData);
         }
     }
 }

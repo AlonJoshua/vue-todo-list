@@ -3,8 +3,8 @@
         <label class="list-title"
              contenteditable="true"
              aria-placeholder="tasks"
-             @input="changeListName"> 
-             {{list.name}} 
+             @input="changeListName">
+             {{list.name}}
         </label>
         <div class="options-bar">
             <img class="list-drag-btn" 

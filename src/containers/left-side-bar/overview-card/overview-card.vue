@@ -1,21 +1,29 @@
+// 1) Fix progress bar placement change that moves depend on view title
+
 <template>
   <div class="overview-card-wrapper">
-      <div class="styled-view-status-bar"></div>
-      <div class="current-view-title" v-if="!currentView">{{ mainCurrentViewTitle }}</div>
-      <div class="current-view-title" v-else>{{ currentView }}</div>
+      <progress-bar :leftBarCurrViewData="leftBarCurrViewData"></progress-bar>
+      <div class="current-view-title-wrapper">
+        <div class="current-view-title"> 
+           {{ leftBarCurrViewData.name }} 
+        </div>
+      </div>
   </div>
 </template>
 
 <script>
+import progressBar from "../../../components/progress-bar/progress-bar.vue"
+
 export default {
   components: {
+    progressBar
   },
   props: {
-    currentView: {}
+    leftBarCurrViewData: {}
   },
   data() {
     return {
-      mainCurrentViewTitle: "Projects"
+      defaultOverviewTitle: "Current projects"
     }
   }
 }
@@ -24,12 +32,17 @@ export default {
 <style lang="scss" scoped>
 .overview-card-wrapper {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  min-width: 250px;
-  min-height: 150px;
+  width: 350px;
+  height: 150px;
   margin-top: 50px;
   margin-right: 40px;
   background-color: white;
+  .current-view-title-wrapper {
+    display: flex;
+    flex: 1 1 auto;
+    margin-left: 20px;
+  }
 }
 </style>

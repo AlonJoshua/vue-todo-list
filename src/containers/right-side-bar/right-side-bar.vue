@@ -1,34 +1,48 @@
+// 1) depend on item status, 
+
 <template>
   <div class="right-bar-wrapper">
       <right-bar-top-manu></right-bar-top-manu>
-      <right-bar-item v-for="(item, index) in currentViewData"
+      <right-bar-item v-for="(item, index) in rightBarCurrViewData.items"
                       :key="index"
-                      :itemData="item">
+                      :itemData="item"
+
+                      v-on:itemDetailsClickHandler="itemDetailsClickHandler($event)">
       </right-bar-item>
-      <div class="list-wrapper">
-          <list v-show="!lists" 
-                v-for="(item, index) in currentViewData"
-                :key="index"
-                :itemData="item"
-                :sortOptions="sortOptions">
-          </list>
-      </div>
   </div>
 </template>
-
 <script>
-import list from "../../containers/list/list.vue"
 import rightBarItem from "./right-bar-item/right-bar-item.vue"
 import rightBarTopManu from "./right-bar-top-manu/right-bar-top-manu.vue"
 export default {
     props: {
-        currentViewData: {},
+        rightBarCurrViewData: {},
         sortOptions: {}
     },
     components: {
-        list,
         rightBarItem,
         rightBarTopManu
+    },
+    data() {
+        return {
+        }
+    },
+    methods: {
+        itemDetailsClickHandler(itemData) {
+            this.$emit("itemDetailsClickHandler", itemData);
+        },
+        checkItems() {
+            console.log()
+        }
+    },
+    computed: {
+        
+    },
+    mounted() {
+        // console.log("Mounted right bar comp data: ", this.rightBarCurrViewData);
+    },
+    updated() {
+        // console.log("Updated right bar comp data: ", this.rightBarCurrViewData);
     }
 }
 </script>

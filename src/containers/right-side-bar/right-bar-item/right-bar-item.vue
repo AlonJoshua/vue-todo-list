@@ -1,24 +1,48 @@
 <template>
   <div class="right-bar-item-wrapper">
-      <item-info-btn :itemData="itemData"></item-info-btn>
+      <item-info-btn :itemData="itemData"
+                     v-on:itemDetailsClickHandler="itemDetailsClickHandler($event)">
+      </item-info-btn>
       <div class="item-title-wrapper">
-          <green-dot></green-dot>
+          <status-dot :itemStatus="itemData.status"></status-dot>
           <div class="item-title">{{itemData.name}}</div>
     </div>
   </div>
 </template>
 
 <script>
-import greenDot from "../../../components/statuses/green-dot/green-dot.vue"
+import statusDot from "../../../components/statuses/status-dot/status-dot.vue"
 import itemInfoBtn from "../item-info-btn/item-info-btn.vue"
 export default {
     props: {
         itemData: {}
     },
     components: {
-        greenDot,
+        statusDot,
         itemInfoBtn
-    }
+    },
+    data() {
+        return {}
+    },
+    methods: {
+        itemDetailsClickHandler(itemData) {
+            this.$emit("itemDetailsClickHandler", itemData);
+        },
+        setCurrStatus() {
+            let isAllItemsStatusesDone = true;
+            for (let i = 0; i < this.itemData.items.length; i++) {
+                if (this.itemData.items[i].status === "Open") {
+                    isAllItemsStatusesDone = false;
+                }
+            }
+            if (isAllItemsStatusesDone === true) {
+                return "Done";
+            } else {
+                return "Open";
+            }
+        }
+    },
+    computed: {}
 }
 </script>
 

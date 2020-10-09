@@ -10,11 +10,13 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
 .right-bar-top-manu-wrapper {
+    display: flex;
+    align-items: center;
     margin-top: 5px;
     width: 450px;
-    height: 30px;
+    height: 35px;
     box-shadow: 0 1px 0px 0px rgb(218, 218, 218);
 }
 </style>
