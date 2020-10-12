@@ -16,7 +16,10 @@
             <middle-line></middle-line>
             <right-bar :rightBarCurrViewData="currBarsView"
                        :sortOptions="sortOptions"
-                       v-on:itemDetailsClickHandler="ChangeToItemView($event)">
+                       v-on:addBtnClick="addNewItem"
+                       v-on:itemDetailsClickHandler="ChangeToItemView($event)"
+                       v-on:doneIconClickHandler="updateItemStatus($event)"
+                       v-on:deleteIconClickHandler="deleteItem($event)">
             </right-bar>     
         </div>              
     </div>
@@ -58,7 +61,7 @@ export default {
                 sortedTasksMap: null,
                 firstTimeSort: true
             },
-            taskStatuses: {
+            itemStatuses: {
                 DONE: "Done",
                 OPEN: "Open",
                 CLOSE: "Close"
@@ -84,8 +87,8 @@ export default {
             }
             this.currBarsView = itemData;
         },
-        addNewTask(list) {
-            list.tasks.unshift({
+        addNewItem() {
+            this.currBarsView.items.unshift({
                 id: Date.now(),
                 name: "",
                 status: "Open",
@@ -97,11 +100,11 @@ export default {
         removeTask(task, list) {
             list.tasks.splice(this.findtaskIndex(list.id, task.id), 1);
         },
-        statusChange(task) {
-            if (task.status === this.taskStatuses.OPEN) {
-                task.status = this.taskStatuses.DONE;
-            } else if (task.status === this.taskStatuses.DONE) {
-                task.status = this.taskStatuses.OPEN;
+        updateItemStatus(itemData) {
+            if (itemData.status === this.itemStatuses.OPEN) {
+                itemData.status = this.itemStatuses.DONE;
+            } else if (itemData.status === this.itemStatuses.DONE) {
+                itemData.status = this.itemStatuses.OPEN;
             }
         },
         setListView(data) {
@@ -130,10 +133,20 @@ export default {
                 list.name = value;
             }
         },
-        deleteList(index) {
-            console.log("index: ", index);
-            console.log("list: ", this.lists[index]);
-            this.lists.splice(index, 1);
+        deleteItem(itemData) {
+            function recurse (arr) {
+                for (let i = 0; i < arr.length; i++) {
+                    if (arr[i].id === itemData.id) {
+                    arr.splice(i, 1);
+                    } else {
+                        if (typeof arr[i] === "object" 
+                            && Object.prototype.hasOwnProperty.call(arr[i], 'items')) {
+                            recurse(arr[i].items);
+                        }
+                    }
+                }
+            }
+            recurse(this.defaultMainView.items);
         },
         findListIndex(id) {
             return this.lists.findIndex(l => l.id === id)

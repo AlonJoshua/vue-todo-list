@@ -2,19 +2,14 @@
   <div class="left-bar-wrapper">
       <over-view :leftBarCurrViewData="leftBarCurrViewData">          
       </over-view>
-      <status-card></status-card>
-      <status-card></status-card>
-      <status-card></status-card>
   </div>
 </template>
 
 <script>
 import overView from "./overview-card/overview-card.vue"
-import StatusCard from "../../components/statuses/left-bar-status-card/lef-bar-status-card.vue"
 export default {
     components: {
-        overView,
-        StatusCard
+        overView
     },
     props: {
         leftBarCurrViewData: {}

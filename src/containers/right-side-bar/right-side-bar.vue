@@ -2,12 +2,13 @@
 
 <template>
   <div class="right-bar-wrapper">
-      <right-bar-top-manu></right-bar-top-manu>
+      <right-bar-top-manu v-on:addBtnClick="addBtnClick"></right-bar-top-manu>
       <right-bar-item v-for="(item, index) in rightBarCurrViewData.items"
                       :key="index"
                       :itemData="item"
-
-                      v-on:itemDetailsClickHandler="itemDetailsClickHandler($event)">
+                      v-on:doneIconClickHandler="doneIconClickHandler($event)"
+                      v-on:itemDetailsClickHandler="itemDetailsClickHandler($event)"
+                      v-on:deleteIconClickHandler="deleteIconClickHandler($event)">
       </right-bar-item>
   </div>
 </template>
@@ -31,8 +32,14 @@ export default {
         itemDetailsClickHandler(itemData) {
             this.$emit("itemDetailsClickHandler", itemData);
         },
-        checkItems() {
-            console.log()
+        doneIconClickHandler(itemData) {
+            this.$emit("doneIconClickHandler", itemData);
+        },
+        deleteIconClickHandler(itemData) {
+            this.$emit("deleteIconClickHandler", itemData);
+        },
+        addBtnClick() {
+            this.$emit("addBtnClick");
         }
     },
     computed: {

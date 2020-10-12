@@ -16,8 +16,8 @@ export default {
         draw() {
             const canvas = document.getElementById('progress-bar-canvas');
             const ctx = canvas.getContext("2d");
-            let x = canvas.width / 2;
-            let y = canvas.height / 2;
+            const x = canvas.width / 2;
+            const y = canvas.height / 2;
             let radius = 60;
             let redArcStartAngle = this.calculateProgressBar.redArc.startAngle;
             let redArcEndAngle = this.calculateProgressBar.redArc.endAngle;
