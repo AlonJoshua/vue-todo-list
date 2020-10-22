@@ -1,25 +1,20 @@
-// 4) Rebuild CRUD system
-// 5) Rebuild sorted view option
-// 6) Rebuild drag and drop functionality
-// 7) Design icons for different behaviors
-// 8) Animate client view on enter/reload, poiniting items/icons, progressbar.
-
-
-
 <template>
     <div class="app-wrapper">
         <main-nav :mainNavData="mainNavData"
-                  v-on:dashboardBtnHandler="ChangeToItemView(defaultMainView)"> 
+                  v-on:dashboardBtnHandler="ChangeToItemView(defaultMainView)">
         </main-nav>
         <div class="side-bars-wrapper">
             <left-bar :leftBarCurrViewData="currBarsView"></left-bar>
-            <middle-line></middle-line>
+            <!-- <middle-line></middle-line> -->
             <right-bar :rightBarCurrViewData="currBarsView"
-                       :sortOptions="sortOptions"
+                       :labels="labels"
                        v-on:addBtnClick="addNewItem"
+                       v-on:sortItemsBySelect="sortRightBarViewBySelect($event)"
                        v-on:itemDetailsClickHandler="ChangeToItemView($event)"
                        v-on:doneIconClickHandler="updateItemStatus($event)"
-                       v-on:deleteIconClickHandler="deleteItem($event)">
+                       v-on:updateItemName="updateItemName($event)"
+                       v-on:deleteIconClickHandler="deleteItem($event)"
+                       v-on:popupWindowLabelClick="setItemLabel($event)">
             </right-bar>     
         </div>              
     </div>
@@ -29,7 +24,7 @@
 import mainNav from "./containers/main-nav/main-nav.vue";
 import leftBar from "./containers/left-side-bar/left-side-bar.vue"
 import rightBar from "./containers/right-side-bar/right-side-bar.vue"
-import middleLine from "./components/middle-line/middle-line.vue"
+// import middleLine from "./components/middle-line/middle-line.vue"
 import dataJson from "../data.json";
 
 export default {
@@ -38,33 +33,30 @@ export default {
         mainNav,
         leftBar,
         rightBar,
-        middleLine
+        // middleLine
     },
     data: () => {
         return {
             mainNavData: {
                 appName: "Tasks management by Alon Joshua",
-                homeBtnName: "Dashboard"
+                homeBtnName: "GTD"
             },
             lastJsonData: dataJson,
             currBarsView: null,
             defaultMainView: null,
             listDefaultName: "tasks",
-            sortOptions: {
-                name: "sort by",
-                options: [
-                    { name: "All" },
-                    { name: "Open" },
-                    { name: "Done" }
-                ],
-                originalTasksList: null,
-                sortedTasksMap: null,
-                firstTimeSort: true
-            },
             itemStatuses: {
                 DONE: "Done",
                 OPEN: "Open",
                 CLOSE: "Close"
+            },
+            labels: {
+                popupTitle: "Add label",
+                popupCardsList: [
+                    {title: "Good to go", color: "#b04632"},
+                    {title: "Sustained", color: "#0079bf"},
+                    {title: "Double check", color: "#cd8313"}
+                ]
             },
             currDraggedEl: null,
             currDragOverEl: null,
@@ -97,8 +89,32 @@ export default {
                 isSorted: false
             })
         },
-        removeTask(task, list) {
-            list.tasks.splice(this.findtaskIndex(list.id, task.id), 1);
+        getItemRef(itemId) {
+            let itemRef = {
+                item: null,
+                parent: null,
+                index: null
+            }
+            function recurse (arr) {
+                for (let i = 0; i < arr.length; i++) {
+                    if (arr[i].id === itemId) {
+                    itemRef.item = arr[i];
+                    itemRef.parent = arr;
+                    itemRef.index = i;
+                    } else {
+                        if (typeof arr[i] === "object" 
+                            && Object.prototype.hasOwnProperty.call(arr[i], 'items')) {
+                            recurse(arr[i].items);
+                        }
+                    }
+                }
+            }
+            recurse(this.defaultMainView.items);
+            return itemRef;
+        },
+        updateItemName(updateData) {
+            const itemToUpdateRef = this.getItemRef(updateData.itemId);
+            itemToUpdateRef.item.name = updateData.newName;
         },
         updateItemStatus(itemData) {
             if (itemData.status === this.itemStatuses.OPEN) {
@@ -107,18 +123,29 @@ export default {
                 itemData.status = this.itemStatuses.OPEN;
             }
         },
-        setListView(data) {
-            if (data.view === "All") {
-                data.list.tasks.forEach(t => t.isSorted = false);
+        sortRightBarViewBySelect(selectValue) {
+            if (selectValue === "name") {
+                    this.currBarsView.items = this.currBarsView.items.sort((a, b) => {
+                            if (a.name < b.name) { return -1 }
+                            if (a.name > b.name) { return 1 }
+                            return 0;
+                    });
+                }
+        },
+        setItemLabel(data) {
+            if (!data.item.labels) {
+                this.$set(data.item, "labels", []);
+                data.item.labels.push(data.$event);
             } else {
-                data.list.tasks.forEach(t => {
-                    t.isSorted = false;
-                    if (t.status !== data.view) {
-                        t.isSorted = true;
-                    }
-                });
+                if (data.item.labels.some(label => label.color === data.$event.color)) {
+                    const labelIndex = data.item.labels.indexOf(data.$event)
+                    data.item.labels.splice(labelIndex, 1);
+                } else {
+                    data.item.labels.push(data.$event);
+                }
             }
         },
+        // 
         addNewList() {
             this.lists.push({
                 id: Date.now(),
@@ -134,19 +161,8 @@ export default {
             }
         },
         deleteItem(itemData) {
-            function recurse (arr) {
-                for (let i = 0; i < arr.length; i++) {
-                    if (arr[i].id === itemData.id) {
-                    arr.splice(i, 1);
-                    } else {
-                        if (typeof arr[i] === "object" 
-                            && Object.prototype.hasOwnProperty.call(arr[i], 'items')) {
-                            recurse(arr[i].items);
-                        }
-                    }
-                }
-            }
-            recurse(this.defaultMainView.items);
+            const itemToDeleteRef = this.getItemRef(itemData.id);
+            itemToDeleteRef.parent.splice(itemToDeleteRef.index, 1);
         },
         findListIndex(id) {
             return this.lists.findIndex(l => l.id === id)
@@ -242,6 +258,9 @@ export default {
         if (this.currBarsView === null) {
             this.currBarsView = this.lastJsonData;
         }
+        if (this.sortedBarView === null) {
+            this.sortedBarView = this.currBarsView;
+        }
     }
 };
 </script>
@@ -274,3 +293,4 @@ export default {
 // 2.1) Status Icon shows depend on status (In App.vue, pass props through computed that prepared all the data
 // for passing it down properly) X
 // 3) Build a progress bar that shows how much of the current project view is finished X
+// 4) Rebuild CRUD system X

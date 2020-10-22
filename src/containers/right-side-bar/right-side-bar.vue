@@ -1,14 +1,17 @@
-// 1) depend on item status, 
-
 <template>
   <div class="right-bar-wrapper">
-      <right-bar-top-manu v-on:addBtnClick="addBtnClick"></right-bar-top-manu>
+      <right-bar-top-manu v-on:addBtnClick="addBtnClick"
+                          v-on:sortItemsBySelect="sortItemsBySelect($event)">
+      </right-bar-top-manu>
       <right-bar-item v-for="(item, index) in rightBarCurrViewData.items"
                       :key="index"
                       :itemData="item"
+                      :labels="labels"
                       v-on:doneIconClickHandler="doneIconClickHandler($event)"
                       v-on:itemDetailsClickHandler="itemDetailsClickHandler($event)"
-                      v-on:deleteIconClickHandler="deleteIconClickHandler($event)">
+                      v-on:updateItemName="updateItemName($event)"
+                      v-on:deleteIconClickHandler="deleteIconClickHandler($event)"
+                      v-on:popupWindowLabelClick="popupWindowLabelClick({item, $event})">
       </right-bar-item>
   </div>
 </template>
@@ -18,15 +21,11 @@ import rightBarTopManu from "./right-bar-top-manu/right-bar-top-manu.vue"
 export default {
     props: {
         rightBarCurrViewData: {},
-        sortOptions: {}
+        labels: {}
     },
     components: {
         rightBarItem,
         rightBarTopManu
-    },
-    data() {
-        return {
-        }
     },
     methods: {
         itemDetailsClickHandler(itemData) {
@@ -35,11 +34,20 @@ export default {
         doneIconClickHandler(itemData) {
             this.$emit("doneIconClickHandler", itemData);
         },
+        sortItemsBySelect(optionSelect) {
+            this.$emit("sortItemsBySelect", optionSelect);
+        },
+        updateItemName(name) {
+            this.$emit("updateItemName", name);
+        },
         deleteIconClickHandler(itemData) {
             this.$emit("deleteIconClickHandler", itemData);
         },
         addBtnClick() {
             this.$emit("addBtnClick");
+        },
+        popupWindowLabelClick(data) {
+            this.$emit("popupWindowLabelClick", data);
         }
     },
     computed: {

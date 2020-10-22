@@ -3,9 +3,19 @@
     <div class="add-btn-wrapper" @click="addBtnClick">
       <icon-btn class="add-btn-icon" :iconData="addBtnData"></icon-btn>
       <label class="add-btn-label" for=""> {{addBtnData.label}} </label>
-      
     </div>
-    <div class="changing-sort-by-title">sort title placeholder</div>
+    <div class="sort-select-wrapper">
+      <select class="sort-select"
+              name="sort options"
+              @change="sortOptionSelect">
+              <option :value="sortSelectData.defaultText"> {{ sortSelectData.defaultText }} </option>
+              <option :value="sortSelectData.options.DATE"> {{ sortSelectData.options.DATE }} </option>
+              <option :value="sortSelectData.options.PRIORITY"> {{ sortSelectData.options.PRIORITY }} </option>
+              <option :value="sortSelectData.options.NAME"> {{ sortSelectData.options.NAME }} </option>
+              <option :value="sortSelectData.options.OPEN"> {{ sortSelectData.options.OPEN }} </option>
+              <option :value="sortSelectData.options.DONE"> {{ sortSelectData.options.DONE }} </option>
+      </select>
+    </div>
       
   </div>
 </template>
@@ -25,12 +35,25 @@ export default {
         iconSize: {
           width: "24px"
         }
+      },
+      sortSelectData: {
+        defaultText: " -- Sort by -- ",
+        options: {
+          DATE: "date",
+          PRIORITY: "priority",
+          NAME: "name",
+          OPEN: "open",
+          DONE: "done"
+        }
       }
     }
   },
   methods: {
     addBtnClick() {
       this.$emit("addBtnClick");
+    },
+    sortOptionSelect(event) {
+      this.$emit("sortItemsBySelect", event.target.value);
     }
   }
 }

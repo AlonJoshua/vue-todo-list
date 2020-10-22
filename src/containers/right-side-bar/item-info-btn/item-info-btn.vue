@@ -28,6 +28,7 @@ export default {
     display: flex;
     width: fit-content;
     margin-top: 9px;
+    margin-left: 0;
     user-select: none;
     .item-info-title {
         font-size: 0.9em;
