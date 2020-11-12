@@ -44,6 +44,7 @@ export default {
     },
     computed: {
         calculateProgressBar() {
+            
             let itemsStatusesCount = {
                 OPEN: 0,
                 CLOSE: 0

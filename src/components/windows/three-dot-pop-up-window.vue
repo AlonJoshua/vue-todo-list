@@ -1,6 +1,6 @@
 <template>
   <div class="three-dots-popup-window-wrapper"
-       v-show="labelOptionsWindow"
+       v-show="optionsWindowProps.isWindowOpen & optionsWindowProps.isPopupWindowFocused"
        tabindex="-1"
        @blur="closeOptionsWindow">
     <span class="popup-title">
@@ -20,7 +20,7 @@
 <script>
 export default {
   props: {
-    labelOptionsWindow: {},
+    optionsWindowProps: {},
     labels: {}
   },
   methods: {

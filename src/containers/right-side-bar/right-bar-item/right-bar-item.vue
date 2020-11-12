@@ -1,39 +1,52 @@
 <template>
-  <div class="right-bar-item-wrapper">
-      <div class="item-top-manu-wrapper">
-          <item-info-btn :itemData="itemData"
-                         v-on:itemDetailsClickHandler="itemDetailsClickHandler($event)">
-          </item-info-btn>
-          <item-labels :itemData="itemData" 
-                       :labels="labels"
-                       v-on:popupWindowLabelClick="popupWindowLabelClick($event)">
-          </item-labels>
-          <div class="options-popup-wrapper">
+  <div class="right-bar-item-wrapper"
+       :class="{'empty-item-spot': itemData.isHidden}"
+       draggable="true" 
+       @dragstart="itemDragStart"
+       @drag="itemDrag"
+       @dragover.prevent
+       @dragenter="itemDragEnter"
+       @dragleave="itemDragLeave"
+       @drop="itemDrop"
+       @dragend="itemDragEnd">
+       <div class="transparent-item-wrapper"
+            :class="{'dragged': itemData.isHidden}">
+            <div class="mid-sticker"></div>
+            <div class="item-top-manu-wrapper">
+            <item-info-btn :itemData="itemData"
+                            v-on:itemDetailsClickHandler="itemDetailsClickHandler($event)">
+            </item-info-btn>
+            <item-labels :itemData="itemData" 
+                        :labels="labels"
+                        v-on:popupWindowLabelClick="popupWindowLabelClick($event)">
+            </item-labels>
+            <div class="options-popup-wrapper">
             <three-dots-option-btn :itemData="itemData"
                                     v-on:threeDotsOptionsClick="threeDotsOptionsClick($event)">
             </three-dots-option-btn>
             <three-dots-option-popup-window ref="optionsWindow"
-                                            :labelOptionsWindow="labelOptionsWindow" 
+                                            :optionsWindowProps="{isWindowOpen, isPopupWindowFocused}" 
                                             :labels="labels"
                                             v-on:popupWindowLabelClick="popupWindowLabelClick($event)"
                                             v-on:closeOptionsWindow="closeOptionsWindow">
             </three-dots-option-popup-window>
-          </div>
-      </div>
-      <div class="item-content-wrapper">
-          <status-dot :itemStatus="itemData.status"></status-dot>
-          <text-title :itemData="itemData" 
-                      v-on:updateItemName="updateItemName($event)">
-          </text-title>
-          <div class="action-icons-wrapper">
-              <done-icon :itemStatus="itemData.status" 
-                         v-on:doneIconClickHandler="doneIconClickHandler(itemData)"></done-icon>
-              <delete-icon :itemData="itemData"
-                           v-on:deleteIconClickHandler="deleteIconClickHandler($event)">
-              </delete-icon>
-          </div>
-      </div>
-      
+            </div>
+            </div>
+            <div class="item-content-wrapper">
+                <status-dot :itemStatus="itemData.status"></status-dot>
+                <text-title :itemData="itemData" 
+                            v-on:updateItemName="updateItemName($event)">
+                </text-title>
+                <div class="action-icons-wrapper">
+                    <done-icon :itemStatus="itemData.status" 
+                                v-on:doneIconClickHandler="doneIconClickHandler(itemData)"></done-icon>
+                    <delete-icon :itemData="itemData"
+                                v-on:deleteIconClickHandler="deleteIconClickHandler($event)">
+                    </delete-icon>
+                </div>
+            </div>
+       </div>
+ 
   </div>
 </template>
 
@@ -50,7 +63,8 @@ import threeDotsOptionPopupWindow from "../../../components/windows/three-dot-po
 export default {
     props: {
         itemData: {},
-        labels: {}
+        labels: {},
+        dragDropData: {}
     },
     components: {
         statusDot,
@@ -64,7 +78,14 @@ export default {
     },
     data() {
         return {
-            labelOptionsWindow: false
+                isWindowOpen: false,
+                isPopupWindowFocused: false,
+                isOptionsBtnClicksToOpen: false,
+                draggedItem: null,
+                isDragged: false,
+                isDraggedOver: false,
+                emptyDiv: null,
+                cursorHistory: {x: null, y: null}
         }
     },
     methods: {
@@ -82,15 +103,18 @@ export default {
         },
         threeDotsOptionsClick(event) {
             event.preventDefault();
-            if (!this.labelOptionsWindow) {
-                this.labelOptionsWindow = true;
+            if (!this.isOptionsBtnClicksToOpen || !this.isWindowOpen & !this.isPopupWindowFocused) {
+                this.isWindowOpen = true;
+                this.isPopupWindowFocused = true;
+                this.isOptionsBtnClicksToOpen = true;
                 this.$nextTick(() => this.$refs.optionsWindow.$el.focus());
             } else {
-                this.labelOptionsWindow = false;
+                this.isWindowOpen = false;
+                this.isOptionsBtnClicksToOpen = false;
             }
         },
         closeOptionsWindow() {
-            this.labelOptionsWindow = false;
+            this.isPopupWindowFocused = false;
         },
         popupWindowLabelClick(label) {
             this.$emit("popupWindowLabelClick", label);
@@ -107,9 +131,31 @@ export default {
             } else {
                 return "Open";
             }
+        },
+        itemDragStart(event) {
+            this.$emit("itemDragStart", {itemData: this.itemData, event: event});
+        },
+        itemDrag(event) {
+            this.$emit("itemDrag", event);
+        },
+        itemDragEnter(event) {
+            if (event.srcElement.className === "mid-sticker") {
+                this.$emit("itemDragEnter", this.itemData);
+                // console.log("enter to mid-sticker")
+            }
+        },
+        itemDragLeave() {
+            // console.log(event.cancelable);
+            this.$emit("itemDragLeave", this.itemData);
+        },
+        itemDrop(event) {
+            event.preventDefault;
+            this.$emit("itemDrop");
+        },
+        itemDragEnd() {
+            this.$emit("itemDragEnd");
         }
     },
-    computed: {}
 }
 </script>
 
@@ -121,6 +167,24 @@ export default {
     padding-bottom: 2px;
     width: 450px;
     box-shadow: 0 1px 0px 0px rgb(218, 218, 218);
+    .transparent-item-wrapper {
+        margin: 5px;
+    }
+    .mid-sticker {
+        opacity: 0;
+        position: absolute;
+        height: 20px;
+        // background-color: black;
+        z-index: 2;
+        // background: lightgreen;
+        width: 420px;
+        margin-left: 10px;
+        margin-top: 25px; 
+        
+        // top: -25px;
+        // height: 7em;
+        opacity: 0.9
+    }
     .item-top-manu-wrapper {
         display: flex;
         justify-content: space-between;
@@ -140,5 +204,11 @@ export default {
         display: flex;
         margin-left: auto;
     }
+}
+.dragged {
+    opacity: 0;
+}
+.empty-item-spot {
+    background-color: #edf0f5;
 }
 </style>

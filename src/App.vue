@@ -7,6 +7,7 @@
             <left-bar :leftBarCurrViewData="currBarsView"></left-bar>
             <!-- <middle-line></middle-line> -->
             <right-bar :rightBarCurrViewData="currBarsView"
+                       :dragDropData="dragDropData"
                        :labels="labels"
                        v-on:addBtnClick="addNewItem"
                        v-on:sortItemsBySelect="sortRightBarViewBySelect($event)"
@@ -14,7 +15,13 @@
                        v-on:doneIconClickHandler="updateItemStatus($event)"
                        v-on:updateItemName="updateItemName($event)"
                        v-on:deleteIconClickHandler="deleteItem($event)"
-                       v-on:popupWindowLabelClick="setItemLabel($event)">
+                       v-on:popupWindowLabelClick="setItemLabel($event)"
+                       @itemDragStart="dragStartHandler($event)"
+                       v-on:itemDrag="itemDragHandler($event)"
+                       v-on:itemDragEnter="itemDragEnterHandler($event)"
+                       v-on:itemDragLeave="itemDragLeaveHandler($event)"
+                       v-on:itemDrop="itemDropHandler($event)"
+                       v-on:itemDragEnd="dragEndHandler">
             </right-bar>     
         </div>              
     </div>
@@ -58,9 +65,21 @@ export default {
                     {title: "Double check", color: "#cd8313"}
                 ]
             },
-            currDraggedEl: null,
-            currDragOverEl: null,
-            draggingPlaceholer: null,
+            dragDropData: {
+                currDraggedEl: null,
+                currDragOverEl: null,
+                currDragLeaveEl: null,
+                currDraggedClone: null,
+                currPlaceholder: null,
+                dragTransparentDiv: null,
+                placeholderEl: {
+                    id: "placeholder",
+                    name: "placeholder",
+                    isHidden: true
+                },
+                isItemDroppedOnDropzone: false,
+                cursorHistory: {x: null, y: null}
+            },
             SVGFiles: {
                 PLUS: require("./assets/plus.svg"),
                 DONE: require("./assets/done.svg"),
@@ -111,6 +130,15 @@ export default {
             }
             recurse(this.defaultMainView.items);
             return itemRef;
+        },
+        addItemToList(list, index, item) {
+            list.splice(index, 0, item);
+        },
+        replaceItemInList(list, index, item) {
+            this.$set(list, index, item);
+        },
+        removeItemFromList(list, index) {
+            list.splice(index, 1);
         },
         updateItemName(updateData) {
             const itemToUpdateRef = this.getItemRef(updateData.itemId);
@@ -174,81 +202,79 @@ export default {
         setIsDragged(data) {
             data.task.isDragged = data.$event;
         },
-        dragStartHandler(task, list) {
-            this.currDraggedEl = {
-                srcList: list,
-                srcTask: task,
-                taskIndex: this.findtaskIndex(list.id, task.id),
-                clonedTask: Object.assign({}, task)
-            };
+        dragStartHandler(data) {
+            this.dragDropData.currDraggedEl = this.getItemRef(data.itemData.id);
+            this.dragDropData.currDraggedClone = data.event.srcElement.cloneNode(true);
+            this.dragDropData.dragTransparentDiv = document.createElement('div');
+            this.dragDropData.currDraggedClone.style.transform = "rotate(5deg)";
+            this.dragDropData.currDraggedClone.style.position = "absolute";
+            this.dragDropData.currDraggedClone.style.backgroundColor = "white";
+            this.replaceItemInList(
+                this.dragDropData.currDraggedEl.parent,
+                this.dragDropData.currDraggedEl.index,
+                this.dragDropData.placeholderEl
+            )
+            document.body.appendChild(this.dragDropData.dragTransparentDiv);
+            document.body.appendChild(this.dragDropData.currDraggedClone);
+            event.dataTransfer.setDragImage(this.dragDropData.dragTransparentDiv, 0, 0);
         },
-        dragEnterHandler(data) {
-            if (data.$event.$event.srcElement.className === "icon drag-icon") {
-                if (data.$event.task === this.currDraggedEl.srcTask) {
-                    data.$event.task.isHidden = true;
-                } else if (data.$event.task !== this.currDraggedEl.srcTask) {
-                    this.currDragOverEl = {
-                        currList: data.list, 
-                        srcTask: data.$event.task,
-                        taskIndex: this.findtaskIndex(data.list.id, data.$event.task.id),
-                        clonedTask: Object.assign({}, data.$event.task)
-                    };
-                    this.currDraggedEl.srcList.tasks.splice(
-                        this.currDraggedEl.taskIndex,
-                        1,
-                        this.currDragOverEl.clonedTask
-                    )
-                    this.currDragOverEl.currList.tasks.splice(
-                        this.currDragOverEl.taskIndex,
-                        1,
-                        this.currDraggedEl.clonedTask
-                    )
-                    this.currDragOverEl.currList.tasks[this.currDragOverEl.taskIndex].isHidden = true;
-                }
-            }
-        },
-        dragLeaveHandler() {
-            if (this.currDragOverEl !== null) {
-                this.currDraggedEl.srcList.tasks.splice(
-                    this.currDraggedEl.taskIndex,
-                    1,
-                    this.currDraggedEl.clonedTask
-                )
-                this.currDragOverEl.currList.tasks.splice(
-                    this.currDragOverEl.taskIndex,
-                    1,
-                    this.currDragOverEl.clonedTask
-                )
+        itemDragHandler(event) {
+            if (event.pageX === 0 & event.pageY === 0) {
+                this.dragDropData.currDraggedClone.style.left = this.dragDropData.cursorHistory.x; 
+               this.dragDropData.currDraggedClone.style.top = this.dragDropData.cursorHistory.y;
             } else {
-                this.currDraggedEl.srcList.tasks[this.currDraggedEl.taskIndex].isHidden = true;
+                this.dragDropData.currDraggedClone.style.left = event.pageX + 'px'; 
+                this.dragDropData.currDraggedClone.style.top = event.pageY + 'px';
+                this.dragDropData.cursorHistory.x = event.pageX + 'px';
+                this.dragDropData.cursorHistory.y = event.pageY + 'px';
             }
         },
-        dropHandler() {
+        itemDragEnterHandler(data) {
+            this.dragDropData.currPlaceholder = this.getItemRef(this.dragDropData.placeholderEl.id);
+            this.dragDropData.currDragOverEl = this.getItemRef(data.id);
+            if (data.id !== this.dragDropData.currPlaceholder.id) {
+                this.removeItemFromList(
+                this.dragDropData.currDraggedEl.parent,
+                this.dragDropData.currPlaceholder.index
+                );
+                this.addItemToList(
+                    this.dragDropData.currDragOverEl.parent,
+                    this.dragDropData.currDragOverEl.index,
+                    this.dragDropData.placeholderEl
+                );           
+            }
+        },
+        itemDragLeaveHandler() {
+            // this.dragDropData.currDragLeaveEl = this.getItemRef(data.id);
+            // if (this.dragDropData.currDragLeaveEl.item === this.dragDropData.placeholderEl) {
+            //     this.replaceItemInList(
+            //         this.dragDropData.currDragLeaveEl.parent,
+            //         this.dragDropData.currDragLeaveEl.index,
+            //         this.dragDropData.currDragOverEl.item
+            //     )
+            // }
+        },
+        itemDropHandler() {
+            this.dragDropData.isItemDroppedOnDropzone = true;
+            this.dragDropData.currPlaceholder = this.getItemRef(this.dragDropData.placeholderEl.id);
+            this.replaceItemInList(
+                this.dragDropData.currPlaceholder.parent,
+                this.dragDropData.currPlaceholder.index,
+                this.dragDropData.currDraggedEl.item
+            )
         },
         dragEndHandler() {
-            this.currDraggedEl.srcList.tasks[this.currDraggedEl.taskIndex].isHidden = false;
-            if (this.currDragOverEl !== null) {
-                this.currDragOverEl.currList.tasks[this.currDragOverEl.taskIndex].isHidden = false;
+            this.dragDropData.currPlaceholder = this.getItemRef(this.dragDropData.placeholderEl.id);
+            if (!this.dragDropData.isItemDroppedOnDropzone) {
+                this.replaceItemInList(
+                this.dragDropData.currPlaceholder.parent,
+                this.dragDropData.currPlaceholder.index,
+                this.dragDropData.currDraggedEl.item
+                )
             }
-            this.currDraggedEl = null;
-            this.currDragOverEl = null;
-        }
-    },
-    computed: {
-        getItemsStatusesCount() {
-            let itemsStatusesCount = {
-                OPEN: 0,
-                CLOSE: 0
-            }
-            for (let i = 0; i < this.currBarsView.items.length; i++) {
-                if (this.currBarsView.items[i].status === "Open") {
-                    itemsStatusesCount.OPEN ++;
-                }
-                else if (this.currBarsView.items[i].status === "Done") {
-                    itemsStatusesCount.CLOSE ++;
-                }
-            }
-            return itemsStatusesCount;
+            document.body.removeChild(this.dragDropData.currDraggedClone);
+            this.dragDropData.currDraggedClone = null;
+            this.dragDropData.isItemDroppedOnDropzone = false;
         }
     },
     created() {
