@@ -4,11 +4,13 @@
                   v-on:dashboardBtnHandler="ChangeToItemView(defaultMainView)">
         </main-nav>
         <div class="side-bars-wrapper">
-            <left-bar :leftBarCurrViewData="currBarsView"></left-bar>
+            <left-bar :leftBarCurrViewData="currBarsView"
+                      :itemStatuses="itemStatuses"></left-bar>
             <!-- <middle-line></middle-line> -->
             <right-bar :rightBarCurrViewData="currBarsView"
                        :dragDropData="dragDropData"
                        :labels="labels"
+                       :sortSelectData="sortSelectData"
                        v-on:addBtnClick="addNewItem"
                        v-on:sortItemsBySelect="sortRightBarViewBySelect($event)"
                        v-on:itemDetailsClickHandler="ChangeToItemView($event)"
@@ -65,6 +67,14 @@ export default {
                     {title: "Double check", color: "#cd8313"}
                 ]
             },
+            sortSelectData: {
+                defaultText: " -- Sort by -- ",
+                options: {
+                DATENEW: "Date Created (Newest First)",
+                DATEOLD: "Date Created (Oldest First)",
+                NAME: "Name (Alphabetically)",
+                }
+            },
             dragDropData: {
                 currDraggedEl: null,
                 currDragOverEl: null,
@@ -105,8 +115,10 @@ export default {
                 status: "Open",
                 isHidden: false,
                 isDragged: false,
-                isSorted: false
+                isSorted: false,
+                dateCreated: JSON.stringify(Date.now())
             })
+            console.log(this.currBarsView.items);
         },
         getItemRef(itemId) {
             let itemRef = {
@@ -152,13 +164,38 @@ export default {
             }
         },
         sortRightBarViewBySelect(selectValue) {
-            if (selectValue === "name") {
-                    this.currBarsView.items = this.currBarsView.items.sort((a, b) => {
-                            if (a.name < b.name) { return -1 }
-                            if (a.name > b.name) { return 1 }
-                            return 0;
-                    });
+            let reversed = false;
+            const getValue = (obj, objKey) => {
+                for (let [key, value] of Object.entries(obj)) {
+                    if (key === objKey) {
+                        return value;
+                    }
                 }
+            };
+            const sortDataBy = (Objkey) => {
+                this.currBarsView.items = this.currBarsView.items.sort((a, b) => {
+                    if (reversed) {
+                        if (getValue(a, Objkey) < getValue(b, Objkey)) { return 1 }
+                        if (getValue(a, Objkey) > getValue(b, Objkey)) { return -1 }
+                        return 0;
+                    } else {
+                        if (getValue(a, Objkey) < getValue(b, Objkey)) { return -1 }
+                        if (getValue(a, Objkey) > getValue(b, Objkey)) { return 1 }
+                        return 0;
+                    }
+                });
+            }
+            switch(selectValue) {
+                case this.sortSelectData.options.NAME:
+                    sortDataBy("name");       
+                    break;        
+                case this.sortSelectData.options.DATENEW:
+                    sortDataBy("dateCreated"); 
+                    break;    
+                case this.sortSelectData.options.DATEOLD:
+                    reversed = true;
+                    sortDataBy("dateCreated"); 
+            }
         },
         setItemLabel(data) {
             if (!data.item.labels) {

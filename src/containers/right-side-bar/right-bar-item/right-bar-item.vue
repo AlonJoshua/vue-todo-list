@@ -13,40 +13,39 @@
             :class="{'dragged': itemData.isHidden}">
             <div class="mid-sticker"></div>
             <div class="item-top-manu-wrapper">
-            <item-info-btn :itemData="itemData"
-                            v-on:itemDetailsClickHandler="itemDetailsClickHandler($event)">
-            </item-info-btn>
-            <item-labels :itemData="itemData" 
-                        :labels="labels"
-                        v-on:popupWindowLabelClick="popupWindowLabelClick($event)">
-            </item-labels>
-            <div class="options-popup-wrapper">
-            <three-dots-option-btn :itemData="itemData"
-                                    v-on:threeDotsOptionsClick="threeDotsOptionsClick($event)">
-            </three-dots-option-btn>
-            <three-dots-option-popup-window ref="optionsWindow"
-                                            :optionsWindowProps="{isWindowOpen, isPopupWindowFocused}" 
-                                            :labels="labels"
-                                            v-on:popupWindowLabelClick="popupWindowLabelClick($event)"
-                                            v-on:closeOptionsWindow="closeOptionsWindow">
-            </three-dots-option-popup-window>
-            </div>
+                <item-info-btn :itemData="itemData"
+                                v-on:itemDetailsClickHandler="itemDetailsClickHandler($event)">
+                </item-info-btn>
+                <item-labels :itemData="itemData" 
+                            :labels="labels"
+                            v-on:popupWindowLabelClick="popupWindowLabelClick($event)">
+                </item-labels>
+                <div class="options-popup-wrapper">
+                    <three-dots-option-btn :itemData="itemData"
+                                            v-on:threeDotsOptionsClick="threeDotsOptionsClick($event)">
+                    </three-dots-option-btn>
+                    <three-dots-option-popup-window ref="optionsWindow"
+                                                    :optionsWindowProps="{isWindowOpen, isPopupWindowFocused}" 
+                                                    :labels="labels"
+                                                    v-on:popupWindowLabelClick="popupWindowLabelClick($event)"
+                                                    v-on:closeOptionsWindow="closeOptionsWindow">
+                    </three-dots-option-popup-window>
+                </div>
             </div>
             <div class="item-content-wrapper">
                 <status-dot :itemStatus="itemData.status"></status-dot>
                 <text-title :itemData="itemData" 
                             v-on:updateItemName="updateItemName($event)">
                 </text-title>
-                <div class="action-icons-wrapper">
+                <!-- <div class="action-icons-wrapper">
                     <done-icon :itemStatus="itemData.status" 
                                 v-on:doneIconClickHandler="doneIconClickHandler(itemData)"></done-icon>
                     <delete-icon :itemData="itemData"
                                 v-on:deleteIconClickHandler="deleteIconClickHandler($event)">
                     </delete-icon>
-                </div>
+                </div> -->
             </div>
        </div>
- 
   </div>
 </template>
 
@@ -55,8 +54,8 @@ import statusDot from "../../../components/statuses/status-dot/status-dot.vue"
 import itemInfoBtn from "../item-info-btn/item-info-btn.vue"
 import itemLabels from "../../../components/labels/item-labels.vue"
 import textTitle from "../../../components/texts/editable-text.vue"
-import doneIcon from "../../../components/icons/done-icon.vue"
-import deleteIcon from "../../../components/icons/delete-icon.vue"
+// import doneIcon from "../../../components/icons/done-icon.vue"
+// import deleteIcon from "../../../components/icons/delete-icon.vue"
 import threeDotsOptionBtn from "../../../components/icons/three-dots-option-btn.vue"
 import threeDotsOptionPopupWindow from "../../../components/windows/three-dot-pop-up-window.vue"
 
@@ -71,8 +70,8 @@ export default {
         itemInfoBtn,
         itemLabels,
         textTitle,
-        doneIcon,
-        deleteIcon,
+        // doneIcon,
+        // deleteIcon,
         threeDotsOptionBtn,
         threeDotsOptionPopupWindow
     },
@@ -81,11 +80,6 @@ export default {
                 isWindowOpen: false,
                 isPopupWindowFocused: false,
                 isOptionsBtnClicksToOpen: false,
-                draggedItem: null,
-                isDragged: false,
-                isDraggedOver: false,
-                emptyDiv: null,
-                cursorHistory: {x: null, y: null}
         }
     },
     methods: {

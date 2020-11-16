@@ -6,6 +6,7 @@
             "status" : "Open",
             "isDragged": false,
             "isSorted": false,
+            "dateCreated": "2020-11-16T12:15:33.010Z",
             "items": [
                 {
                     "id": 1,
@@ -13,7 +14,8 @@
                     "status": "Open",
                     "isHidden": false,
                     "isDragged": false,
-                    "isSorted": false
+                    "isSorted": false,
+                    "dateCreated": "2020-11-16T12:16:28.323Z"
                 },
                 {
                     "id": 2,
@@ -21,7 +23,8 @@
                     "status": "Done",
                     "isHidden": false,
                     "isDragged": false,
-                    "isSorted": false
+                    "isSorted": false,
+                    "dateCreated": "2020-11-16T12:16:46.403Z"
                 },
                 {
                     "id": 3,
@@ -29,7 +32,8 @@
                     "status": "Open",
                     "isHidden": false,
                     "isDragged": false,
-                    "isSorted": false
+                    "isSorted": false,
+                    "dateCreated": "2020-11-16T12:17:05.833Z"
                 }
             ]
         },
@@ -39,6 +43,7 @@
             "status": "Open",
             "isDragged": false,
             "isSorted": false,
+            "dateCreated": "2020-11-16T12:18:58.645Z",
             "items": [
                 {
                     "id": 4,
@@ -46,7 +51,8 @@
                     "status": "Done",
                     "isHidden": false,
                     "isDragged": false,
-                    "isSorted": false
+                    "isSorted": false,
+                    "dateCreated": "2020-11-16T12:19:19.539Z"
                 },
                 {
                     "id": 5,
@@ -54,7 +60,8 @@
                     "status": "Open",
                     "isHidden": false,
                     "isDragged": false,
-                    "isSorted": false
+                    "isSorted": false,
+                    "dateCreated": "2020-11-16T12:20:01.821Z"
                 },
                 {
                     "id": 6,
@@ -62,7 +69,8 @@
                     "status": "Open",
                     "isHidden": false,
                     "isDragged": false,
-                    "isSorted": false
+                    "isSorted": false,
+                    "dateCreated": "2020-11-16T12:19:41.514Z"
                 }
             ]
         },
@@ -72,6 +80,7 @@
             "status": "Done",
             "isDragged": false,
             "isSorted": false,
+            "dateCreated": "2020-11-16T12:17:36.625Z",
             "items": [
                 {
                     "id": 7,
@@ -79,7 +88,8 @@
                     "status": "Done",
                     "isHidden": false,
                     "isDragged": false,
-                    "isSorted": false
+                    "isSorted": false,
+                    "dateCreated": "2020-11-16T12:18:38.037Z"
                 },
                 {
                     "id": 8,
@@ -87,7 +97,8 @@
                     "status": "Done",
                     "isHidden": false,
                     "isDragged": false,
-                    "isSorted": false
+                    "isSorted": false,
+                    "dateCreated": "2020-11-16T12:18:01.910Z"
                 },
                 {
                     "id": 9,
@@ -95,7 +106,8 @@
                     "status": "Done",
                     "isHidden": false,
                     "isDragged": false,
-                    "isSorted": false
+                    "isSorted": false,
+                    "dateCreated": "2020-11-16T12:18:18.725Z"
                 }
             ]
         }

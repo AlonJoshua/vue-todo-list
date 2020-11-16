@@ -1,6 +1,7 @@
 <template>
   <div class="right-bar-wrapper">
-      <right-bar-top-manu v-on:addBtnClick="addBtnClick"
+      <right-bar-top-manu :sortSelectData="sortSelectData"
+                          v-on:addBtnClick="addBtnClick"
                           v-on:sortItemsBySelect="sortItemsBySelect($event)">
       </right-bar-top-manu>
       <right-bar-item v-for="(item, index) in rightBarCurrViewData.items"
@@ -29,7 +30,8 @@ export default {
     props: {
         rightBarCurrViewData: {},
         labels: {},
-        dragDropData: {}
+        dragDropData: {},
+        sortSelectData: {}
     },
     components: {
         rightBarItem,

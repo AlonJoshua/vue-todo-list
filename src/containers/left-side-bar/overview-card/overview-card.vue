@@ -38,6 +38,7 @@ export default {
   height: 150px;
   margin-top: 50px;
   margin-right: 40px;
+  margin-bottom: 70px;
   background-color: white;
   .current-view-title-wrapper {
     display: flex;

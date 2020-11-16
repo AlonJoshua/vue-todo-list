@@ -9,11 +9,9 @@
               name="sort options"
               @change="sortOptionSelect">
               <option :value="sortSelectData.defaultText"> {{ sortSelectData.defaultText }} </option>
-              <option :value="sortSelectData.options.DATE"> {{ sortSelectData.options.DATE }} </option>
-              <option :value="sortSelectData.options.PRIORITY"> {{ sortSelectData.options.PRIORITY }} </option>
+              <option :value="sortSelectData.options.DATENEW"> {{ sortSelectData.options.DATENEW }} </option>
+              <option :value="sortSelectData.options.DATEOLD"> {{ sortSelectData.options.DATEOLD }} </option>
               <option :value="sortSelectData.options.NAME"> {{ sortSelectData.options.NAME }} </option>
-              <option :value="sortSelectData.options.OPEN"> {{ sortSelectData.options.OPEN }} </option>
-              <option :value="sortSelectData.options.DONE"> {{ sortSelectData.options.DONE }} </option>
       </select>
     </div>
       
@@ -27,6 +25,9 @@ export default {
   components: {
     iconBtn
   },
+  props: {
+    sortSelectData: {}
+  },
   data() {
     return {
       addBtnData: {
@@ -36,16 +37,6 @@ export default {
           width: "24px"
         }
       },
-      sortSelectData: {
-        defaultText: " -- Sort by -- ",
-        options: {
-          DATE: "date",
-          PRIORITY: "priority",
-          NAME: "name",
-          OPEN: "open",
-          DONE: "done"
-        }
-      }
     }
   },
   methods: {
@@ -77,6 +68,11 @@ export default {
       height: 30px;
       .add-btn-icon {
         display: flex;
+      }
+    }
+    .sort-select-wrapper {
+      .sort-select {
+        width: 100px;
       }
     }
 }

@@ -28,6 +28,7 @@ export default {
       ctx.moveTo(14, 20);
       ctx.lineTo(19, 26);
       ctx.lineTo(25, 13);
+      ctx.strokeStyle = "rgb(46, 200, 151)"
       ctx.stroke();
       
       ctx.beginPath();
