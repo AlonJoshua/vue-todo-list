@@ -4,6 +4,7 @@
             @mouseleave="draw(canvasDefaultColor)"
             @click="threeDotsOptionsClick"
             :id="canvasId"
+            class="three-dots-canvas"
             width="25" 
             height="25"></canvas>
   </div>
@@ -72,5 +73,8 @@ export default {
 <style lang="scss" scoped>
 .three-dots-options-wrapper {
   margin-top: 5px;
+  .three-dots-canvas {
+    border-radius: 6px;
+  }
 }
 </style>

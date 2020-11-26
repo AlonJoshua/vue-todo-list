@@ -10,7 +10,7 @@
 <script>
 export default {
     props: {
-        leftBarCurrViewData: {}
+        progressBarData: {}
     },
     methods: {
         draw() {
@@ -60,24 +60,24 @@ export default {
                 },
                 percentageDone: 0
             }
-            if (this.leftBarCurrViewData.items.length) {
-                for (let i = 0; i < this.leftBarCurrViewData.items.length; i++) {
-                    if (this.leftBarCurrViewData.items[i].status === "Open") {
+            if (this.progressBarData.items.length) {
+                for (let i = 0; i < this.progressBarData.items.length; i++) {
+                    if (this.progressBarData.items[i].status === "Open") {
                         itemsStatusesCount.OPEN ++;
                     }
-                    else if (this.leftBarCurrViewData.items[i].status === "Done") {
+                    else if (this.progressBarData.items[i].status === "Done") {
                         itemsStatusesCount.CLOSE ++;
                     }
                 }
-                calculatedArcs.greenArc.endAngle = (1 + (itemsStatusesCount.CLOSE / this.leftBarCurrViewData.items.length) * 2) * Math.PI;
-                calculatedArcs.redArc.startAngle = (1 + (itemsStatusesCount.CLOSE / this.leftBarCurrViewData.items.length) * 2) * Math.PI;
-                calculatedArcs.percentageDone = Math.round((itemsStatusesCount.CLOSE / this.leftBarCurrViewData.items.length) * 100);
+                calculatedArcs.greenArc.endAngle = (1 + (itemsStatusesCount.CLOSE / this.progressBarData.items.length) * 2) * Math.PI;
+                calculatedArcs.redArc.startAngle = (1 + (itemsStatusesCount.CLOSE / this.progressBarData.items.length) * 2) * Math.PI;
+                calculatedArcs.percentageDone = Math.round((itemsStatusesCount.CLOSE / this.progressBarData.items.length) * 100);
             }
             return calculatedArcs;
         }
     },
     watch: {
-        leftBarCurrViewData: function() {
+        progressBarData: function() {
             this.draw();
         }
     },

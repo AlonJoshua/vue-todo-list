@@ -6,7 +6,6 @@
        @drag="itemDrag"
        @dragover.prevent
        @dragenter="itemDragEnter"
-       @dragleave="itemDragLeave"
        @drop="itemDrop"
        @dragend="itemDragEnd">
        <div class="transparent-item-wrapper"
@@ -37,13 +36,6 @@
                 <text-title :itemData="itemData" 
                             v-on:updateItemName="updateItemName($event)">
                 </text-title>
-                <!-- <div class="action-icons-wrapper">
-                    <done-icon :itemStatus="itemData.status" 
-                                v-on:doneIconClickHandler="doneIconClickHandler(itemData)"></done-icon>
-                    <delete-icon :itemData="itemData"
-                                v-on:deleteIconClickHandler="deleteIconClickHandler($event)">
-                    </delete-icon>
-                </div> -->
             </div>
        </div>
   </div>
@@ -54,8 +46,6 @@ import statusDot from "../../../components/statuses/status-dot/status-dot.vue"
 import itemInfoBtn from "../item-info-btn/item-info-btn.vue"
 import itemLabels from "../../../components/labels/item-labels.vue"
 import textTitle from "../../../components/texts/editable-text.vue"
-// import doneIcon from "../../../components/icons/done-icon.vue"
-// import deleteIcon from "../../../components/icons/delete-icon.vue"
 import threeDotsOptionBtn from "../../../components/icons/three-dots-option-btn.vue"
 import threeDotsOptionPopupWindow from "../../../components/windows/three-dot-pop-up-window.vue"
 
@@ -70,16 +60,14 @@ export default {
         itemInfoBtn,
         itemLabels,
         textTitle,
-        // doneIcon,
-        // deleteIcon,
         threeDotsOptionBtn,
         threeDotsOptionPopupWindow
     },
     data() {
         return {
-                isWindowOpen: false,
-                isPopupWindowFocused: false,
-                isOptionsBtnClicksToOpen: false,
+            isWindowOpen: false,
+            isPopupWindowFocused: false,
+            isOptionsBtnClicksToOpen: false,
         }
     },
     methods: {
@@ -133,21 +121,17 @@ export default {
             this.$emit("itemDrag", event);
         },
         itemDragEnter(event) {
+            event.itemData = this.itemData;
             if (event.srcElement.className === "mid-sticker") {
-                this.$emit("itemDragEnter", this.itemData);
-                // console.log("enter to mid-sticker")
+                this.$emit("itemDragEnter", event);
             }
-        },
-        itemDragLeave() {
-            // console.log(event.cancelable);
-            this.$emit("itemDragLeave", this.itemData);
         },
         itemDrop(event) {
             event.preventDefault;
-            this.$emit("itemDrop");
+            this.$emit("itemDrop", event);
         },
-        itemDragEnd() {
-            this.$emit("itemDragEnd");
+        itemDragEnd(event) {
+            this.$emit("itemDragEnd", event);
         }
     },
 }
@@ -165,19 +149,12 @@ export default {
         margin: 5px;
     }
     .mid-sticker {
-        opacity: 0;
         position: absolute;
         height: 20px;
-        // background-color: black;
         z-index: 2;
-        // background: lightgreen;
         width: 420px;
         margin-left: 10px;
         margin-top: 25px; 
-        
-        // top: -25px;
-        // height: 7em;
-        opacity: 0.9
     }
     .item-top-manu-wrapper {
         display: flex;

@@ -2,10 +2,10 @@
 
 <template>
   <div class="overview-card-wrapper">
-      <progress-bar :leftBarCurrViewData="leftBarCurrViewData"></progress-bar>
+      <progress-bar :progressBarData="progressBarData"></progress-bar>
       <div class="current-view-title-wrapper">
         <div class="current-view-title"> 
-           {{ leftBarCurrViewData.name }} 
+           {{ progressBarData.name }} 
         </div>
       </div>
   </div>
@@ -19,7 +19,7 @@ export default {
     progressBar
   },
   props: {
-    leftBarCurrViewData: {}
+    progressBarData: {}
   },
   data() {
     return {

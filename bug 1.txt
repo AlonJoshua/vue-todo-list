@@ -1,0 +1,43 @@
+altKey: false
+bubbles: true
+button: 0
+buttons: 1
+cancelBubble: false
+cancelable: true
+clientX: 621
+clientY: 267
+composed: true
+ctrlKey: false
+currentTarget: null
+dataTransfer: DataTransfer {dropEffect: "none", effectAllowed: "uninitialized", items: DataTransferItemList, types: Array(0), files: FileList}
+defaultPrevented: false
+detail: 0
+eventPhase: 0
+fromElement: null
+isTrusted: true
+layerX: 621
+layerY: 267
+metaKey: false
+movementX: 0
+movementY: 0
+offsetX: 621
+offsetY: 267
+pageX: 621
+pageY: 267
+path: (9) [div.done-item-wrapper.empty-spot, div.left-bar-done-list-wrapper, div.left-bar-wrapper, div.side-bars-wrapper, div.app-wrapper, body, html.js-focus-visible, document, Window]
+relatedTarget: null
+returnValue: true
+screenX: 621
+screenY: 370
+shiftKey: false
+sourceCapabilities: InputDeviceCapabilities {firesTouchEvents: false}
+srcElement: div.done-item-wrapper.empty-spot
+target: div.done-item-wrapper.empty-spot
+timeStamp: 2329.410000005737
+toElement: div.done-item-wrapper.empty-spot
+type: "drag"
+view: Window {window: Window, self: Window, document: document, name: "", location: Location, …}
+which: 1
+x: 621
+y: 267
+__proto__: DragEvent

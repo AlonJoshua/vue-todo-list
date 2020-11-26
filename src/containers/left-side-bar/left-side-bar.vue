@@ -1,13 +1,19 @@
 <template>
   <div class="left-bar-wrapper">
-      <over-view :leftBarCurrViewData="leftBarCurrViewData">          
+      <over-view :progressBarData="currBarsView">          
       </over-view>
-      
-      <left-side-done-item 
-      v-for="(item, index) in doneListData"
-      :key="index.status === itemStatuses.DONE"
-      :itemData="item">
-      </left-side-done-item>
+      <div class="left-bar-done-list-wrapper">
+        <left-side-done-item 
+        v-for="(item, index) in leftBarDoneItems"
+        :key="index"
+        :itemData="item"
+        @itemDragStart="itemDragStart($event)"
+        @itemDrag="itemDrag($event)"
+        @itemDragEnter="itemDragEnter($event)"
+        @itemDrop="itemDrop($event)"
+        @itemDragEnd=itemDragEnd($event)>
+        </left-side-done-item>
+      </div>
   </div>
 </template>
 
@@ -20,20 +26,37 @@ export default {
         leftSideDoneItem
     },
     props: {
-        leftBarCurrViewData: {},
+        currBarsView: {},
+        leftBarDoneItems: {},
         itemStatuses: {}
     },
     methods: {
-        dashboardBtnHandler() {
-            console.log("click");
-            this.$emit("dashboardBtnHandler");
+        // dashboardBtnHandler() {
+        //     console.log("click");
+        //     this.$emit("dashboardBtnHandler");
+        // }
+        itemDragStart(data) {
+            data.listData = this.leftBarDoneItems;
+            this.$emit("itemDragStart", data);
+        },
+        itemDrag(event) {
+            // console.log("2 left")
+            // console.log(event)
+            this.$emit("itemDrag", event);
+        },
+        itemDragEnter(data) {
+            data.listData = this.leftBarDoneItems;
+            this.$emit("itemDragEnter", data);
+        },
+        itemDrop(data) {
+            data.listData = this.leftBarDoneItems;
+            this.$emit("itemDrop", data);
+        },
+        itemDragEnd(data) {
+            data.listData = this.leftBarDoneItems;
+            this.$emit("itemDragEnd", data)
         }
     },
-    computed: {
-        doneListData() {
-            return this.leftBarCurrViewData.items.filter(item => item.status === this.itemStatuses.DONE);
-        }
-    }
 }
 </script>
 
@@ -46,5 +69,10 @@ export default {
     min-width: 300px;
     width: 100%;
     height: 100%;
+    .left-bar-done-list-wrapper {
+        margin-right: 40px;
+        padding: 5px;
+        background-color: white;
+    }
 }
 </style>
