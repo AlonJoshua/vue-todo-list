@@ -1,30 +1,22 @@
 <template>
-    <div id="app">
-       <the-header></the-header>
-    </div>
+  <v-app class="gtd">
+    <the-header></the-header>
+  </v-app>
 </template>
 
 <script>
-import TheHeader from "./components/the-header";
+
+import theHeader from './components/the-header';
 
 export default {
-    name: "App",
-    components: {
-        TheHeader
-    },
-    data: () => {
-        return {
-            
-        }
-    },
-    methods: {
-        
-    }
+  name: 'App',
+
+  components: {
+      theHeader
+  },
+
+  data: () => ({
     
+  }),
 };
 </script>
-
-<style lang="scss" scoped>
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;500&display=swap');
-
-</style>
