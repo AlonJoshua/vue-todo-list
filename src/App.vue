@@ -1,7 +1,7 @@
 <template>
   <v-app class="gtd">
     <the-header />
-        <dashboard-view />
+    <router-view :key="$route.path"></router-view>
   </v-app>
 </template>
 
@@ -9,7 +9,7 @@
 
 import theHeader from './components/the-header';
 // import home from './views/home';
-import dashboardView from './views/dashboard-view'
+// import dashboardView from './views/dashboard-view'
 
 export default {
   name: 'App',
@@ -17,7 +17,7 @@ export default {
   components: {
       theHeader,
       // home,
-      dashboardView
+      // dashboardView
   }
 };
 </script>
