@@ -6,10 +6,36 @@ Vue.use(Vuex)
 export const store = new Vuex.Store({
     state: {
         lists: [
-            {   title: 'To Do', 
+            {   title: 'To Do',
                 items: [
                     {content: 'Build a todo list'},
-                    {content: 'Build cards style'}
+                    {content: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Totam nihil quis consequuntur asperiores autem fuga porro aspernatur voluptates iste, inventore praesentium possimus ullam et assumenda consequatur deserunt, numquam accusamus vero?'},
+                ]
+            },
+            {   title: 'Doing', 
+                items: [
+                    {content: 'Working on cards style'},
+                    {content: 'Working on todo list'},
+                    {content: 'Working on cards style'},
+                    {content: 'Working on todo list'}
+                ]
+            },
+            {   title: 'Done', 
+                items: [
+                    {content: 'Writing the lists state'},
+                    {content: 'Finish cards style'}
+                ]
+            },
+            {   title: 'More', 
+                items: [
+                    {content: 'More writing the lists state'},
+                    {content: 'More Finish cards style'}
+                ]
+            },
+            {   title: 'extra', 
+                items: [
+                    {content: 'extra writing the lists state'},
+                    {content: 'extra Finish cards style'}
                 ]
             },
             {   title: 'Doing', 
@@ -24,6 +50,19 @@ export const store = new Vuex.Store({
                     {content: 'Finish cards style'}
                 ]
             },
+            {   title: 'More', 
+                items: [
+                    {content: 'More writing the lists state'},
+                    {content: 'More Finish cards style'}
+                ]
+            },
+            {   title: 'extra', 
+                items: [
+                    {content: 'extra writing the lists state'},
+                    {content: 'extra Finish cards style'}
+                ]
+            },
+            
         ]
     },
     getters: {
@@ -32,9 +71,26 @@ export const store = new Vuex.Store({
         }
     },
     mutations: {
-
+        addList(state) {
+            const newList = {
+                title: 'New List', 
+                items: []
+            }
+            state.lists.push(newList)
+        },
+        addCard(state, listId) {
+            const newCard = {
+                content: 'new card'
+            }
+            state.lists[listId].items.push(newCard)
+        }
     },
     actions: {
-
+        addList(context) {
+            context.commit('addList')
+        },
+        addCard(context, listId) {
+            context.commit('addCard', listId)
+        }
     }
 })
