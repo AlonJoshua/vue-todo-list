@@ -1,6 +1,6 @@
 <template>
   <v-app class="gtd">
-    <the-header />
+    <the-header v-if="$route.path !== '/' " />
     <router-view :key="$route.path"></router-view>
   </v-app>
 </template>
