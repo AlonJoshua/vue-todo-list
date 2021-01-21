@@ -1,6 +1,7 @@
 <template>
     <v-container fluid>
-        <v-row no-gutters class="ml-1">
+        <h1>board</h1>
+        <!-- <v-row no-gutters class="ml-1">
             <v-col cols="3" class="px-2 mb-3" v-for="(list, index) in lists" :key="index">
                 <v-card color="grey lighten-2">
                     <v-container>
@@ -25,25 +26,25 @@
             <v-col cols="3" class="text-center px-2">
                 <addListBtn />
             </v-col>
-        </v-row>
+        </v-row> -->
     </v-container>
 </template>
 
 <script>
-import listCardItem from '@/components/list-card-item'
-import listCardBtn from '@/components/list-card-button'
-import addListBtn from '@/components/lists-container-btn'
+// import listCardItem from '@/components/list-card-item'
+// import listCardBtn from '@/components/list-card-button'
+// import addListBtn from '@/components/lists-container-btn'
 
 
 export default {
     components: {
-        listCardItem,
-        listCardBtn,
-        addListBtn
+        // listCardItem,
+        // listCardBtn,
+        // addListBtn
     },
     computed: {
-    lists() {
-      return this.$store.getters.lists
+    board() {
+      return this.$store.getters.board()
     }
   }
 }

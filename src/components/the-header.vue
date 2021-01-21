@@ -73,7 +73,7 @@ export default {
     toRoute(route) {
       route.name === this.$route.name ? '' : this.$router.push(route)
     }
-  }
+  },
 }
 </script>
 

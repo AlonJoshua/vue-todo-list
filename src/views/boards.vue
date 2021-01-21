@@ -15,42 +15,50 @@
               v-for="board in boards"
               :key="board.title"
             >
-              <v-card 
-                @click="click" 
+              <router-link
+                :to="{
+                  name: 'boardDetails', 
+                  params: {
+                    id: board.id
+                  }
+                }"
+              >
+                <v-card 
                 height="11rem"
                 dark
                 :color="`${board.color}`"
-              >
-                <v-card-title>
-                  {{board.title}}
-                  <v-icon right>{{board.icon}}</v-icon>
-                </v-card-title>
-                <v-card-subtitle class="pt-2">
-                  {{board.description}}
-                </v-card-subtitle>
-                <v-row cols="12" 
-                       dense 
-                       align="center" 
-                       class="pa-3"
-                       v-if="board.team"
                 >
-                  <v-col cols="auto">
-                    <v-card-text>
-                      <h3>Team</h3>
-                    </v-card-text>
-                  </v-col>
-                  <v-divider inset vertical class="my-3"></v-divider>
-                  <v-col>
-                    <v-avatar size="35" class="red ml-2 white--text">AJ</v-avatar>
-                  </v-col>
-                </v-row>
-              </v-card>
+                  <v-card-title>
+                    {{board.title}}
+                    <v-icon right>{{board.icon}}</v-icon>
+                  </v-card-title>
+                  <v-card-subtitle class="pt-2">
+                    {{board.description}}
+                  </v-card-subtitle>
+                  <v-row cols="12" 
+                        dense 
+                        align="center" 
+                        class="pa-3"
+                        v-if="board.team"
+                  >
+                    <v-col cols="auto">
+                      <v-card-text>
+                        <h3>Team</h3>
+                      </v-card-text>
+                    </v-col>
+                    <v-divider inset vertical class="my-3"></v-divider>
+                    <v-col>
+                      <v-avatar size="35" class="red ml-2 white--text">AJ</v-avatar>
+                    </v-col>
+                  </v-row>
+                </v-card>
+              </router-link>
             </v-col>
             <v-col cols="4">
               <v-card dark 
                       height="11rem" 
                       color="primary lighten-2"
-                      @click="click"
+                      @click="createBoard"
               >
                 <v-container fill-height>
                   <v-spacer />
@@ -82,8 +90,8 @@ export default {
     }
   },
   methods: {
-    click() {
-      console.log('card click')
+    createBoard() {
+      console.log('board created')
     }
   },
   computed: {
