@@ -1,7 +1,9 @@
 <template>
-  <v-app class="gtd">
+  <v-app>
     <the-header v-if="$route.path !== '/' " />
-    <router-view :key="$route.path"></router-view>
+    <v-main class="primary">
+      <router-view :key="$route.path"></router-view>
+    </v-main>
   </v-app>
 </template>
 
@@ -13,7 +15,10 @@ import theHeader from './components/the-header';
 
 export default {
   name: 'App',
-
+  date() {
+    return {
+    }
+  },
   components: {
       theHeader,
       // home,
