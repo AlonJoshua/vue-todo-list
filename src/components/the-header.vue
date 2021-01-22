@@ -74,6 +74,9 @@ export default {
       route.name === this.$route.name ? '' : this.$router.push(route)
     }
   },
+  mounted() {
+    console.log(this.$route);
+  }
 }
 </script>
 

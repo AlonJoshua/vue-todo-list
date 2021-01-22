@@ -15,8 +15,6 @@
     "vue": "^2.6.11",
     "vue-material-adapter": "^0.17.0-beta.10",
     "vue-router": "^3.4.9",
-    "vue-videobg": "^2.0.0",
-    "vuedraggable": "^4.0.1",
     "vuetify": "^2.2.11",
     "vuex": "^3.6.0"
   },

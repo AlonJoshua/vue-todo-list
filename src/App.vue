@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <the-header v-if="$route.path !== '/' " />
+    <the-header v-if="$route.path !== homeRoute.path" />
     <v-main class="primary">
       <router-view :key="$route.path"></router-view>
     </v-main>
@@ -10,8 +10,6 @@
 <script>
 
 import theHeader from './components/the-header';
-// import home from './views/home';
-// import dashboardView from './views/dashboard-view'
 
 export default {
   name: 'App',
@@ -21,8 +19,11 @@ export default {
   },
   components: {
       theHeader,
-      // home,
-      // dashboardView
+  },
+  computed: {
+    homeRoute() {
+      return this.$router.options.routes.find(route => route.name === 'home')
+    }
   }
 };
 </script>
