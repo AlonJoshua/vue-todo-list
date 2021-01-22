@@ -1,21 +1,35 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import home from '../views/home'
-import about from '../views/about'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: home
+    name: 'home',
+    component: () => import(/*webpackChunkName: home */ '../views/home')
+  },
+  {
+    path: '/boards',
+    name: 'boards',
+    component: () => import(/*webpackChunkName: boards */ '../views/boards')
+  },
+  {
+    path: '/boards/:boardId',
+    name: 'boardDetails',
+    props: true,
+    component: () => import(/*webpackChunkName: boardDetails */ '../views/boardDetails')
+  },
+  {
+    path: '/statistics',
+    name: 'statistics',
+    component: () => import(/*webpackChunkName: statistics */ '../views/statistics')
   },
   {
     path: '/about',
-    name: 'About',
-    component: about
-  }
+    name: 'about',
+    component: () => import(/*webpackChunkName: about */ '../views/about')
+  },
 ]
 
 const router = new VueRouter({
