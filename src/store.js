@@ -85,31 +85,33 @@ export const store = new Vuex.Store({
         ],
     },
     getters: {
-        // lists: state => {
-        //     return state.lists
-        // }
+        getBoard: (state) => (boardId) => {
+            return state.boards.find(board => board.id === parseInt(boardId))
+        }
     },
     mutations: {
-        // addList(state) {
-        //     const newList = {
-        //         title: 'New List', 
-        //         items: []
-        //     }
-        //     state.lists.push(newList)
-        // },
-        // addCard(state, listId) {
-        //     const newCard = {
-        //         content: 'new card'
-        //     }
-        //     state.lists[listId].items.push(newCard)
-        // }
+        addNewCardToList(state, idsObj) {
+            const newCard = {
+                content: 'new card'
+            }
+            const board = state.boards.find(board => board.id === parseInt(idsObj.boardId))
+            board.lists[idsObj.listIndex].items.push(newCard)
+        },
+        addNewListToBoard(state, boardId) {
+            const newList = {
+                title: 'New List', 
+                items: []
+            }
+            const board = state.boards.find(board => board.id === parseInt(boardId))
+            board.lists.push(newList)
+        },
     },
     actions: {
-        // addList(context) {
-        //     context.commit('addList')
-        // },
-        // addCard(context, listId) {
-        //     context.commit('addCard', listId)
-        // }
+        addNewListToBoard(context, boardId) {
+            context.commit('addNewListToBoard', boardId)
+        },
+        addNewCardToList(context, idsObj) {
+            context.commit('addNewCardToList', idsObj)
+        }
     }
 })

@@ -15,8 +15,9 @@ const routes = [
     component: () => import(/*webpackChunkName: boards */ '../views/boards')
   },
   {
-    path: '/boards/:id',
+    path: '/boards/:boardId',
     name: 'boardDetails',
+    props: true,
     component: () => import(/*webpackChunkName: boardDetails */ '../views/boardDetails')
   },
   {

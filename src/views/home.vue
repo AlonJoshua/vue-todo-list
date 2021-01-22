@@ -138,7 +138,9 @@ export default {
       this.login()
     },
     login() {
-      this.$router.push({name: 'boards'});
+      this.$router.push({name: 'boards'})
+        .then(() => console.log('resolved'))
+        .catch(e => console.log('error: ', e))
     }
   }
 }

@@ -1,6 +1,8 @@
 <template>
   <v-main>
     <v-container class="mt-4">
+
+      <!-- title -->
       <v-card flat>
         <v-card-title>
           <v-spacer />
@@ -9,6 +11,8 @@
         </v-card-title>
       </v-card>
         <v-divider ></v-divider>
+
+        <!-- boards cards -->
         <v-container fluid class="mt-2">
           <v-row cols="12">
             <v-col cols="4"
@@ -19,7 +23,7 @@
                 :to="{
                   name: 'boardDetails', 
                   params: {
-                    id: board.id
+                    boardId: board.id
                   }
                 }"
               >
@@ -53,6 +57,8 @@
                   </v-row>
                 </v-card>
               </router-link>
+
+            <!-- new board card -->
             </v-col>
             <v-col cols="4">
               <v-card dark 
