@@ -22,7 +22,8 @@
                 >
                   {{homeBtns.signIn.text}}
                 </v-btn>
-                <v-overlay 
+                <v-dialog
+                  persistent
                   :value="homeBtns.signIn.signInForm"
                 >
                   <v-form>
@@ -48,7 +49,7 @@
                       </v-row>
                     </v-card>
                   </v-form>
-                </v-overlay>
+                </v-dialog>
                 <v-btn 
                   color="blue lighten-3" 
                   class="ma-3"
@@ -56,7 +57,8 @@
                 >
                   {{homeBtns.register.text}}
                 </v-btn>
-                <v-overlay 
+                <v-dialog
+                  persistent
                   :value="homeBtns.register.registerForm"
                 >
                   <v-form>
@@ -88,7 +90,7 @@
                       </v-row>
                     </v-card>
                   </v-form>
-                </v-overlay>
+                </v-dialog>
               <v-spacer />
               </v-row>
             </v-card>

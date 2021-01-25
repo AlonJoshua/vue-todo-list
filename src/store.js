@@ -87,31 +87,45 @@ export const store = new Vuex.Store({
     getters: {
         getBoard: (state) => (boardId) => {
             return state.boards.find(board => board.id === parseInt(boardId))
+        },
+        getList: (state, getters) => (idsObj) => {
+            const board = getters.getBoard(idsObj.boardId)
+            return board.lists.find(list => board.lists.indexOf(list) === idsObj.listIndex)
+        },
+        getListCardItem: (state, getters) => (idsObj) => {
+            const list = getters.getList(idsObj)
+            return list.items.find(item => list.items.indexOf(item) === idsObj.cardIndex)
         }
     },
     mutations: {
-        addNewCardToList(state, idsObj) {
-            const newCard = {
-                content: 'new card'
-            }
-            const board = state.boards.find(board => board.id === parseInt(idsObj.boardId))
-            board.lists[idsObj.listIndex].items.push(newCard)
+        addNewListToBoard(state, data) {
+            data.board.lists.push(data.list)
         },
-        addNewListToBoard(state, boardId) {
-            const newList = {
-                title: 'New List', 
-                items: []
-            }
-            const board = state.boards.find(board => board.id === parseInt(boardId))
-            board.lists.push(newList)
+        addNewCardToList(state, data) {
+            data.list.items.push(data.cardItem)
         },
+        editCardContent(state, data) {
+            data.card.content = data.textareaValue
+        }
     },
     actions: {
-        addNewListToBoard(context, boardId) {
-            context.commit('addNewListToBoard', boardId)
+        addNewListToBoard({ getters, commit }, boardId) {
+            const data = {
+                board: getters.getBoard(boardId),
+                list: { title: 'New List', items: [] }
+            }
+            commit('addNewListToBoard', data)
         },
-        addNewCardToList(context, idsObj) {
-            context.commit('addNewCardToList', idsObj)
+        addNewCardToList({ getters, commit }, idsObj) {
+            const data = {
+                list: getters.getList(idsObj),
+                cardItem: { content: 'new item...' }
+            }
+            commit('addNewCardToList', data)
+        },
+        editCardContent({ getters, commit }, data) {
+            data.card = getters.getListCardItem(data.idsObj)
+            commit('editCardContent', data)
         }
     }
 })
