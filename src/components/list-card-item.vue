@@ -44,9 +44,7 @@
                 </v-container>
             </v-list-item>
             
-            <v-overlay
-                :value="overlay"
-            >
+            <v-overlay :value="overlay">
                 <v-textarea
                     v-if="cardMenu.selectedItemName === 'Edit text'"
                     light
@@ -82,21 +80,11 @@ export default {
                 active: false,
                 selectedItemName: null,
                 items: [
-                    {
-                        name: 'Edit text',
-                    },
-                    {
-                        name: 'Edit Labels',
-                    },
-                    {
-                        name: 'Move',
-                    },
-                    {
-                        name: 'Copy',
-                    },
-                    {
-                        name: 'Delete',
-                    }
+                    { name: 'Edit text', },
+                    { name: 'Edit Labels', },
+                    { name: 'Move', },
+                    { name: 'Copy', },
+                    { name: 'Delete', }
                 ]
             }
         }

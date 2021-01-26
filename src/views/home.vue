@@ -15,19 +15,25 @@
               </v-card-subtitle>
               <v-row class="mt-4">
                 <v-spacer />
-                <v-btn 
-                  color="blue lighten-3" 
-                  class="ma-3"
-                  @click="homeBtns.signIn.signInForm = !homeBtns.signIn.signInForm"
-                >
-                  {{homeBtns.signIn.text}}
-                </v-btn>
+                
                 <v-dialog
                   persistent
-                  :value="homeBtns.signIn.signInForm"
+                  max-width="40vw"
+                  v-model="homeBtns.signIn.signInForm"
                 >
-                  <v-form>
-                    <v-card class="pa-4">
+                  <template v-slot:activator="{ on, attrs}">
+                    <v-btn
+                      v-bind="attrs"
+                      v-on="on"
+                      color="blue lighten-3" 
+                      class="ma-3"
+                    >
+                      {{homeBtns.signIn.text}}
+                    </v-btn>
+                  </template>
+
+                  <v-form lazy-validation>
+                    <v-card class="pa-4" max-width="40vw">
                       <v-row>
                         <v-spacer></v-spacer>
                         <v-btn text icon @click="homeBtns.signIn.signInForm = false">
@@ -44,25 +50,42 @@
                             label="Password"
                             type="password"                          
                           ></v-text-field>
-                          <v-btn type="submit" @click="validateSignin">{{homeBtns.signinFormSubmit.text}}</v-btn>
+                          <v-container>
+                            <v-row>
+                              <v-spacer />
+                                <v-btn 
+                                  type="submit" 
+                                  @click="validateSignin"
+                                >
+                                  {{homeBtns.signinFormSubmit.text}}
+                                </v-btn>
+                              <v-spacer />
+                            </v-row>
+                          </v-container>
                         </v-col>
                       </v-row>
                     </v-card>
                   </v-form>
                 </v-dialog>
-                <v-btn 
-                  color="blue lighten-3" 
-                  class="ma-3"
-                  @click="homeBtns.register.registerForm = !homeBtns.register.registerForm"
-                >
-                  {{homeBtns.register.text}}
-                </v-btn>
+
                 <v-dialog
                   persistent
-                  :value="homeBtns.register.registerForm"
+                  max-width="40vw"
+                  v-model="homeBtns.register.registerForm"
                 >
-                  <v-form>
-                    <v-card class="pa-4">
+                  <template v-slot:activator="{ on, attrs}">
+                    <v-btn
+                      v-bind="attrs"
+                      v-on="on"
+                      color="blue lighten-3" 
+                      class="ma-3"
+                    >
+                      {{homeBtns.register.text}}
+                    </v-btn>
+                  </template>
+
+                  <v-form lazy-validation>
+                    <v-card class="pa-4" max-width="40vw">
                       <v-row>
                         <v-spacer></v-spacer>
                         <v-btn text icon @click="homeBtns.register.registerForm = false">
@@ -85,7 +108,18 @@
                             type="password"
                             label="Password"                          
                           ></v-text-field>
-                          <v-btn type="submit" @click="validateRegister">{{homeBtns.registerFormSubmit.text}}</v-btn>
+                          <v-container>
+                            <v-row>
+                              <v-spacer />
+                                <v-btn 
+                                  type="submit" 
+                                  @click="validateRegister"
+                                >
+                                  {{homeBtns.registerFormSubmit.text}}
+                                </v-btn>
+                              <v-spacer />
+                            </v-row>
+                          </v-container>
                         </v-col>
                       </v-row>
                     </v-card>
