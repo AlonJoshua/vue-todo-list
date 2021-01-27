@@ -5,79 +5,57 @@ Vue.use(Vuex)
 
 export const store = new Vuex.Store({
     state: {
+        labels: [
+            { content: 'Label...', color: 'green'},
+            { content: 'Label...', color: 'yellow'},
+            { content: 'Label...', color: 'orange'},
+            { content: 'Label...', color: 'red'},
+            { content: 'Label...', color: 'purple'},
+            { content: 'Label...', color: 'blue'},
+            { content: 'Label...', color: 'indigo'}
+        ],
         boards: [
             { 
                 title: 'Alon GTD project',
                 id: 123,
                 description: 'Building a boards app',
                 team: [{name: 'AJ'}, {name: 'KD'}],
-                action: 'click route to specific board',
                 icon: 'mdi-poll',
                 color: 'primary lighten-1',
                 lists: [
                     {   
                         title: 'To Do',
                         items: [
-                            {content: 'Build a todo list'},
-                            {content: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Totam nihil quis consequuntur asperiores autem fuga porro aspernatur voluptates iste, inventore praesentium possimus ullam et assumenda consequatur deserunt, numquam accusamus vero?'},
+                            {
+                                content: 'Build a todo list', 
+                                labels: []
+                            },
+                            {
+                                content: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Totam nihil quis consequuntur asperiores autem fuga porro aspernatur voluptates iste, inventore praesentium possimus ullam et assumenda consequatur deserunt, numquam accusamus vero?',
+                                labels: []
+                            },
                         ]
                     },
                     {   
                         title: 'Doing', 
                         items: [
-                            {content: 'Working on cards style'},
-                            {content: 'Working on todo list'},
-                            {content: 'Working on cards style'},
-                            {content: 'Working on todo list'}
+                            {
+                                content: 'Working on cards style',
+                                labels: []
+                            },
                         ]
                     },
                     {   
                         title: 'Done', 
                         items: [
-                            {content: 'Writing the lists state'},
-                            {content: 'Finish cards style'}
-                        ]
-                    },
-                    {   
-                        title: 'More', 
-                        items: [
-                            {content: 'More writing the lists state'},
-                            {content: 'More Finish cards style'}
-                        ]
-                    },
-                    {   
-                        title: 'extra', 
-                        items: [
-                            {content: 'extra writing the lists state'},
-                            {content: 'extra Finish cards style'}
-                        ]
-                    },
-                    {   
-                        title: 'Doing', 
-                        items: [
-                            {content: 'Working on todo list'},
-                            {content: 'Working on cards style'}
-                        ]
-                    },
-                    {   
-                        title: 'Done', 
-                        items: [
-                            {content: 'Writing the lists state'},
-                            {content: 'Finish cards style'}
-                        ]
-                    },
-                    {   
-                        title: 'More', 
-                        items: [
-                            {content: 'More writing the lists state'},
-                            {content: 'More Finish cards style'}
-                        ]
-                    },
-                    {   
-                        title: 'extra', 
-                        items: [
-                            {content: 'extra writing the lists state'},
-                            {content: 'extra Finish cards style'}
+                            {
+                                content: 'Writing the lists state',
+                                labels: []
+                            },
+                            {
+                                content: 'Finish cards style',
+                                labels: []
+                            }
                         ]
                     },
                 ]
@@ -95,9 +73,15 @@ export const store = new Vuex.Store({
         getListCardItem: (state, getters) => (idsObj) => {
             const list = getters.getList(idsObj)
             return list.items.find(item => list.items.indexOf(item) === idsObj.cardIndex)
+        },
+        getLabels: (state) => {
+            return state.labels
         }
     },
     mutations: {
+        addNewBoard(state, board) {
+            state.boards.push(board)
+        },
         addNewListToBoard(state, data) {
             data.board.lists.push(data.list)
         },
@@ -109,6 +93,25 @@ export const store = new Vuex.Store({
         }
     },
     actions: {
+        addNewBoard({commit}) {
+            const board = {
+                title: 'New board',
+                id: Date.now(),
+                description: 'New project ahead...',
+                team: [{name: 'AJ'}],
+                icon: 'mdi-poll',
+                color: 'primary lighten-1',
+                lists: [
+                    {   
+                        title: 'New List',
+                        items: [
+                            {content: 'New Item'},
+                        ]
+                    },
+                ]
+            }
+            commit('addNewBoard', board)
+        },
         addNewListToBoard({ getters, commit }, boardId) {
             const data = {
                 board: getters.getBoard(boardId),
