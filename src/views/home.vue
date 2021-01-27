@@ -44,11 +44,13 @@
                         <v-col>
                           <v-text-field
                             label="Email"
-                            type="email"                          
+                            type="email"
+                            append-outer-icon="mdi-email"                        
                           ></v-text-field>
                           <v-text-field
                             label="Password"
-                            type="password"                          
+                            type="password"
+                            append-outer-icon="mdi-lock"                           
                           ></v-text-field>
                           <v-container>
                             <v-row>
@@ -95,18 +97,22 @@
                       <v-row>
                         <v-col>
                           <v-text-field
-                            label="First name"                          
+                            label="First name"
+                            append-outer-icon="mdi-account"                        
                           ></v-text-field>
                           <v-text-field
-                            label="Last name"                          
+                            label="Last name"
+                            append-outer-icon="mdi-account"                           
                           ></v-text-field>
                           <v-text-field
                             label="email"
-                            type="email"                          
+                            type="email"
+                            append-outer-icon="mdi-email"                  
                           ></v-text-field>
                           <v-text-field
                             type="password"
-                            label="Password"                          
+                            label="Password"
+                            append-outer-icon="mdi-lock"                          
                           ></v-text-field>
                           <v-container>
                             <v-row>

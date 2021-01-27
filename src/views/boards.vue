@@ -17,7 +17,7 @@
           <v-row cols="12">
             <v-col cols="4"
               v-for="board in boards"
-              :key="board.title"
+              :key="board.id"
             >
               <router-link
                 :to="{
@@ -61,18 +61,41 @@
             <!-- new board card -->
             </v-col>
             <v-col cols="4">
-              <v-card dark 
-                      height="11rem" 
-                      color="primary lighten-2"
-                      @click="createBoard"
-              >
-                <v-container fill-height>
-                  <v-spacer />
-                  <h2>{{newBoardBtn.title}}</h2>
-                  <v-icon right>{{newBoardBtn.icon}}</v-icon>
-                  <v-spacer />
-                </v-container>
-              </v-card>
+              <v-dialog v-model="newBoardBtn.dialog" max-width="40vw">
+
+                <template v-slot:activator="{on, attrs}">
+                  <v-card dark 
+                          height="11rem" 
+                          color="primary lighten-2"
+                          v-bind="attrs"
+                          v-on="on"
+                  >
+                    <v-container fill-height>
+                      <v-spacer />
+                        <h2>{{newBoardBtn.title}}</h2>
+                        <v-icon right>{{newBoardBtn.icon}}</v-icon>
+                      <v-spacer />
+                    </v-container>
+                  </v-card>
+                </template>
+
+                <v-form>
+                  <v-card max-width="40vw">
+                    <v-container>
+                      <v-row>
+                        <v-col>
+                          <v-text-field
+                            label="Board name"
+                            type="text"
+                          >
+                          </v-text-field>
+                        </v-col>
+                      </v-row>
+                    </v-container>
+                  </v-card>
+                </v-form>
+
+              </v-dialog>
             </v-col>
           </v-row>
         </v-container>
@@ -90,14 +113,15 @@ export default {
     return {
       homePageTitle: "My boards",
       newBoardBtn: {
+        dialog: false,
         title: 'Create new board',
         icon: 'mdi-view-grid-plus'
       }
     }
   },
   methods: {
-    createBoard() {
-      console.log('board created')
+    createNewBoard() {
+      this.$store.dispatch('addNewBoard')
     }
   },
   computed: {
