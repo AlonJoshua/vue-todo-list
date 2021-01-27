@@ -93,37 +93,15 @@ export const store = new Vuex.Store({
         }
     },
     actions: {
-        addNewBoard({commit}) {
-            const board = {
-                title: 'New board',
-                id: Date.now(),
-                description: 'New project ahead...',
-                team: [{name: 'AJ'}],
-                icon: 'mdi-poll',
-                color: 'primary lighten-1',
-                lists: [
-                    {   
-                        title: 'New List',
-                        items: [
-                            {content: 'New Item'},
-                        ]
-                    },
-                ]
-            }
+        addNewBoard({commit}, board) {
             commit('addNewBoard', board)
         },
-        addNewListToBoard({ getters, commit }, boardId) {
-            const data = {
-                board: getters.getBoard(boardId),
-                list: { title: 'New List', items: [] }
-            }
+        addNewListToBoard({ getters, commit }, data) {
+            data.board = getters.getBoard(data.boardId),
             commit('addNewListToBoard', data)
         },
-        addNewCardToList({ getters, commit }, idsObj) {
-            const data = {
-                list: getters.getList(idsObj),
-                cardItem: { content: 'new item...' }
-            }
+        addNewCardToList({ getters, commit }, data) {
+            data.list = getters.getList(data.idsObj),
             commit('addNewCardToList', data)
         },
         editCardContent({ getters, commit }, data) {

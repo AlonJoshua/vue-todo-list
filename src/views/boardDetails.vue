@@ -60,14 +60,24 @@ export default {
     },
     methods: {
         addNewCard(listIndex) {
-            const idsObj = {
-                boardId: this.boardId,
-                listIndex
+            const data = {
+                idsObj: {
+                    boardId: this.boardId,
+                    listIndex,
+                },
+                cardItem: { 
+                    content: 'new item...',
+                    labels: [] 
+                }
             }
-            this.$store.dispatch('addNewCardToList', idsObj)
+            this.$store.dispatch('addNewCardToList', data)
         },
         addNewList() {
-            this.$store.dispatch('addNewListToBoard', this.boardId)
+            const data = {
+                boardId: this.boardId,
+                list: { title: 'New List', items: [] }
+            }
+            this.$store.dispatch('addNewListToBoard', data)
         }
     },
     computed: {
