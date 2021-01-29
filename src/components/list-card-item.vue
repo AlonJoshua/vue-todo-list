@@ -7,18 +7,28 @@
                 draggable="true" 
                 @dragstart="onDrag"
             >
-                <v-container fluid>
-                    <v-row>
-                        <v-list-item-content>
-                            {{content}}
-                        </v-list-item-content>
-                        
+                <v-container fluid class="pt-0">
+                    <v-row no-gutters align="center" cols="12">
+                        <v-col cols="10">
+                            <v-chip 
+                                v-for="(label, index) in itemCard.labels" 
+                                :key="index"
+                                dark
+                                :color="label.color"
+                                class="ma-1"
+                            > {{label.content}}
+                            </v-chip>
+                        </v-col>
+                        <v-col cols="2" align-self="start">
+                        <v-row>
+                            <v-spacer></v-spacer>
                         <!-- card item menu -->
                         <v-menu :offset-x="true">
                             <template 
                                 v-slot:activator="{ on, attrs }"
                             >
-                                <v-btn 
+                                <v-btn
+                                    class="mt-4"
                                     text 
                                     icon
                                     v-bind="attrs"
@@ -36,7 +46,7 @@
                                     <v-dialog 
                                         v-for="item in cardMenu.items" 
                                         :key="item.name"
-                                        :v-model="item.dialog.active"
+                                        v-model="item.dialog.active"
                                         max-width="30vw"
                                     >
                                         <template v-slot:activator="{ on, attrs}">
@@ -63,7 +73,7 @@
                                                         <v-spacer />
                                                             <v-btn 
                                                                 class="success mb-2" 
-                                                                @click="updateCardText"
+                                                                @click="updateCardText(item)"
                                                             >   
                                                                 {{saveBtn}}
                                                             </v-btn>
@@ -77,9 +87,27 @@
                                             <v-container>
                                                 <v-row>
                                                     <v-col>
-                                                        <v-card-title class="justify-center">
-                                                            {{item.dialog.labelTitle}}
-                                                        </v-card-title>
+                                                        <v-row cols="12" align="center">
+                                                            <v-col cols="3"></v-col>
+                                                            <v-spacer />
+                                                                <v-col cols="6">
+                                                                    <v-card-title class="justify-center pl-2">
+                                                                        {{item.dialog.labelTitle}}
+                                                                    </v-card-title>
+                                                                </v-col>
+                                                            <v-spacer />
+                                                            <v-col cols="3">
+                                                                <v-btn 
+                                                                    text 
+                                                                    plain 
+                                                                    :ripple="false" 
+                                                                    icon
+                                                                    @click="item.dialog.active = false"
+                                                                >
+                                                                    <v-icon right>mdi-close</v-icon>
+                                                                </v-btn>
+                                                            </v-col>
+                                                        </v-row>
                                                         <v-divider></v-divider>
                                                         <v-list>
                                                             <v-card
@@ -125,6 +153,14 @@
                                 </v-list-item-group>
                             </v-list>
                         </v-menu>
+                        </v-row>
+                        </v-col>
+                        </v-row>
+                    <v-row>
+                        <v-list-item-content>
+                            {{content}}
+                        </v-list-item-content>
+                        
                     </v-row>
                 </v-container>
             </v-list-item>
@@ -187,12 +223,14 @@ export default {
         cardMenuSelect(itemName) {
             this.cardMenu.selectedItemName = itemName
         },
-        updateCardText() {
+        updateCardText(item) {
             const data = {
                 idsObj: this.idsObj,
                 textareaValue: this.textareaValue
             }
             this.$store.dispatch('editCardContent', data)
+            item.dialog.active = false
+            this.cardMenu.active = false
         },
         isCardLabel(label) {
             const card = this.itemCard
@@ -209,7 +247,7 @@ export default {
                 const labelIndex = this.itemCard.labels.indexOf(label)
                 this.itemCard.labels.splice(labelIndex, 1)
             }
-            console.log(this.itemCard)
+            // console.log(this.itemCard)
         },
         onDrag() {
             console.log('drag event')
