@@ -2,6 +2,7 @@
     <v-hover>
         <template v-slot:default="{ hover }">
             <v-card class="ma-2" :class="{ 'grey': hover, 'lighten-3': hover}">
+
                 <v-list-item
                     class="py-2" 
                     draggable="true" 
