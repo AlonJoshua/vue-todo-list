@@ -161,7 +161,6 @@ export default {
               { title: 'Done', items: [] },
           ]
       }
-      console.log(board)
       this.$store.dispatch('addNewBoard', board)
       this.newBoardBtn.dialog = false
     }
@@ -173,7 +172,6 @@ export default {
   },
   watch: {
     newBoardBtn: function() {
-      console.log(this.newBoardData.boardName)
     }
   }
 }

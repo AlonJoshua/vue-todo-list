@@ -63,6 +63,9 @@ export const store = new Vuex.Store({
         ],
     },
     getters: {
+        getBoardsList: (state) => {
+            return state.boards
+        },
         getBoard: (state) => (boardId) => {
             return state.boards.find(board => board.id === parseInt(boardId))
         },
@@ -90,6 +93,13 @@ export const store = new Vuex.Store({
         },
         editCardContent(state, data) {
             data.card.content = data.textareaValue
+        },
+        moveCard(state, data) {
+            const card = {...data.card}
+            data.list.items.splice(data.cardIndex, 0, card)
+        },
+        deleteCard(state, data) {
+            data.list.items.splice(data.cardIndex, 1)
         }
     },
     actions: {
@@ -107,6 +117,14 @@ export const store = new Vuex.Store({
         editCardContent({ getters, commit }, data) {
             data.card = getters.getListCardItem(data.idsObj)
             commit('editCardContent', data)
+        },
+        moveCard({ getters, commit }, data) {
+            data.list = getters.getList(data.movingCardIdsObj)
+            commit('moveCard', data)
+        },
+        deleteCard({ getters, commit }, data) {
+            data.list = getters.getList(data)
+            commit('deleteCard', data)
         }
     }
 })

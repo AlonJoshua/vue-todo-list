@@ -22,6 +22,8 @@
                                 :cardIndex="itemIndex"
                                 :listIndex="listIndex"
                                 :boardId="boardId"
+                                :boardTitle="board.title"
+                                :listTitle="list.title"
                             ></list-card-item>
                         <v-card flat class="ma-2 grey lighten-2">
                             <v-btn block text @click="addNewCard(listIndex)">
