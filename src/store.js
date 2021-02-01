@@ -95,8 +95,7 @@ export const store = new Vuex.Store({
             data.card.content = data.textareaValue
         },
         moveCard(state, data) {
-            const card = {...data.card}
-            data.list.items.splice(data.cardIndex, 0, card)
+            data.list.items.splice(data.movingCardIdsObj.cardIndex, 0, data.card)
         },
         deleteCard(state, data) {
             data.list.items.splice(data.cardIndex, 1)

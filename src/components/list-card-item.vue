@@ -1,7 +1,7 @@
 <template>
     <v-hover>
         <template v-slot:default="{ hover }">
-            <v-card class="ma-2" :class="{ 'grey': hover, 'lighten-3': hover}" >
+            <v-card class="ma-2" :class="{ 'grey': hover, 'lighten-3': hover}">
                 <v-list-item
                     class="py-2" 
                     draggable="true" 
@@ -24,13 +24,12 @@
                                 <v-row>
                                     <v-spacer></v-spacer>
                                     <!-- card item menu -->
-                                    <v-menu :offset-x="true">
-                                        <template v-slot:activator="{ on, attrs }">
+                                    <v-menu :offset-x="true" v-model="menu">
+                                        <template v-slot:activator="{ on }">
                                             <v-btn
                                                 class="mt-4"
                                                 text 
                                                 icon
-                                                v-bind="attrs"
                                                 v-on="on"
                                                 v-show="hover"
                                             >
@@ -41,7 +40,7 @@
                                             <v-list-item-group>
 
                                                 <!-- menu option component -->
-                                                <menu-options v-bind="$props"></menu-options>
+                                                <menu-options v-bind="$props" @close-menu="closeMenu"></menu-options>
                                             </v-list-item-group>
                                         </v-list>
                                     </v-menu>
@@ -78,10 +77,13 @@ export default {
     ],
     data() {
         return {
-            
+            menu: false
         }
     },
     methods: {
+        closeMenu() {
+            this.menu = false
+        },
         onDrag() {
             console.log('drag event')
         }
@@ -101,7 +103,6 @@ export default {
             return this.$store.getters.getLabels
         }
     }
-
 }
 </script>
 

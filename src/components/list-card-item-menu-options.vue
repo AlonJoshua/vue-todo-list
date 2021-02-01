@@ -185,6 +185,7 @@ export default {
     ],
     data() {
         return {
+            isDialogClose: false,
             textareaValue: null,
             selectedBoardValue: this.boardTitle,
             selectedListValue: this.listTitle,
@@ -263,11 +264,11 @@ export default {
                     listIndex: this.selectedBoard.lists.indexOf(this.selectedList),
                     cardIndex: this.selectedPosition - 1
                 },
-                card: this.$store.getters.getListCardItem(this.idsObj)
+                card: {...this.$store.getters.getListCardItem(this.idsObj)}
             }
-            this.$store.dispatch('moveCard', data)
-            this.$store.dispatch('deleteCard', this.idsObj)
-            item.dialog.active = false
+                this.$store.dispatch('deleteCard', this.idsObj)
+                this.$store.dispatch('moveCard', data)
+                item.dialog.active = false
         }
     },
     computed: {
@@ -277,6 +278,9 @@ export default {
                 listIndex: this.listIndex,
                 cardIndex: this.cardIndex
             }
+        },
+        dialogActivationArray() {
+            return this.cardMenuOptions.items.map(item => item.dialog.active)
         },
         itemCard() {
             return this.$store.getters.getListCardItem(this.idsObj)
@@ -304,6 +308,13 @@ export default {
         },
         selectedListIndexes() {
             return Object.keys(this.selectedList.items).map(key => parseInt(key) + 1)
+        }
+    },
+    watch: {
+        dialogActivationArray() {
+            if(this.dialogActivationArray.every(i => i === false)) {
+                this.$emit('close-menu');
+            }
         }
     }
 }
