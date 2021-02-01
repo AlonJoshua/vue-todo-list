@@ -15,18 +15,25 @@
               </v-card-subtitle>
               <v-row class="mt-4">
                 <v-spacer />
-                <v-btn 
-                  color="blue lighten-3" 
-                  class="ma-3"
-                  @click="homeBtns.signIn.signInForm = !homeBtns.signIn.signInForm"
+                
+                <v-dialog
+                  persistent
+                  max-width="40vw"
+                  v-model="homeBtns.signIn.signInForm"
                 >
-                  {{homeBtns.signIn.text}}
-                </v-btn>
-                <v-overlay 
-                  :value="homeBtns.signIn.signInForm"
-                >
-                  <v-form>
-                    <v-card class="pa-4">
+                  <template v-slot:activator="{ on, attrs}">
+                    <v-btn
+                      v-bind="attrs"
+                      v-on="on"
+                      color="blue lighten-3" 
+                      class="ma-3"
+                    >
+                      {{homeBtns.signIn.text}}
+                    </v-btn>
+                  </template>
+
+                  <v-form lazy-validation>
+                    <v-card class="pa-4" max-width="40vw">
                       <v-row>
                         <v-spacer></v-spacer>
                         <v-btn text icon @click="homeBtns.signIn.signInForm = false">
@@ -37,30 +44,50 @@
                         <v-col>
                           <v-text-field
                             label="Email"
-                            type="email"                          
+                            type="email"
+                            append-outer-icon="mdi-email"                        
                           ></v-text-field>
                           <v-text-field
                             label="Password"
-                            type="password"                          
+                            type="password"
+                            append-outer-icon="mdi-lock"                           
                           ></v-text-field>
-                          <v-btn type="submit" @click="validateSignin">{{homeBtns.signinFormSubmit.text}}</v-btn>
+                          <v-container>
+                            <v-row>
+                              <v-spacer />
+                                <v-btn 
+                                  type="submit" 
+                                  @click="validateSignin"
+                                >
+                                  {{homeBtns.signinFormSubmit.text}}
+                                </v-btn>
+                              <v-spacer />
+                            </v-row>
+                          </v-container>
                         </v-col>
                       </v-row>
                     </v-card>
                   </v-form>
-                </v-overlay>
-                <v-btn 
-                  color="blue lighten-3" 
-                  class="ma-3"
-                  @click="homeBtns.register.registerForm = !homeBtns.register.registerForm"
+                </v-dialog>
+
+                <v-dialog
+                  persistent
+                  max-width="40vw"
+                  v-model="homeBtns.register.registerForm"
                 >
-                  {{homeBtns.register.text}}
-                </v-btn>
-                <v-overlay 
-                  :value="homeBtns.register.registerForm"
-                >
-                  <v-form>
-                    <v-card class="pa-4">
+                  <template v-slot:activator="{ on, attrs}">
+                    <v-btn
+                      v-bind="attrs"
+                      v-on="on"
+                      color="blue lighten-3" 
+                      class="ma-3"
+                    >
+                      {{homeBtns.register.text}}
+                    </v-btn>
+                  </template>
+
+                  <v-form lazy-validation>
+                    <v-card class="pa-4" max-width="40vw">
                       <v-row>
                         <v-spacer></v-spacer>
                         <v-btn text icon @click="homeBtns.register.registerForm = false">
@@ -70,25 +97,40 @@
                       <v-row>
                         <v-col>
                           <v-text-field
-                            label="First name"                          
+                            label="First name"
+                            append-outer-icon="mdi-account"                        
                           ></v-text-field>
                           <v-text-field
-                            label="Last name"                          
+                            label="Last name"
+                            append-outer-icon="mdi-account"                           
                           ></v-text-field>
                           <v-text-field
                             label="email"
-                            type="email"                          
+                            type="email"
+                            append-outer-icon="mdi-email"                  
                           ></v-text-field>
                           <v-text-field
                             type="password"
-                            label="Password"                          
+                            label="Password"
+                            append-outer-icon="mdi-lock"                          
                           ></v-text-field>
-                          <v-btn type="submit" @click="validateRegister">{{homeBtns.registerFormSubmit.text}}</v-btn>
+                          <v-container>
+                            <v-row>
+                              <v-spacer />
+                                <v-btn 
+                                  type="submit" 
+                                  @click="validateRegister"
+                                >
+                                  {{homeBtns.registerFormSubmit.text}}
+                                </v-btn>
+                              <v-spacer />
+                            </v-row>
+                          </v-container>
                         </v-col>
                       </v-row>
                     </v-card>
                   </v-form>
-                </v-overlay>
+                </v-dialog>
               <v-spacer />
               </v-row>
             </v-card>
