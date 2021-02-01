@@ -420,7 +420,6 @@ export default {
         dialogActivationArray() {
             return this.cardMenuOptions.items.map(item => item.dialog.active)
         },
-
         itemCard() {
             return this.$store.getters.getListCardItem(this.idsObj)
         },

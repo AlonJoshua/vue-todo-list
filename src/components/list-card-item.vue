@@ -2,7 +2,10 @@
     <v-hover>
         <template v-slot:default="{ hover }">
             <v-card class="ma-2" :class="{ 'grey': hover, 'lighten-3': hover}">
+<<<<<<< HEAD
 
+=======
+>>>>>>> fixed menu options move bug, fixed closing options manu bug
                 <v-list-item
                     class="py-2" 
                     draggable="true" 
