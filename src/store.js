@@ -63,6 +63,9 @@ export const store = new Vuex.Store({
         ],
     },
     getters: {
+        getBoardsList: (state) => {
+            return state.boards
+        },
         getBoard: (state) => (boardId) => {
             return state.boards.find(board => board.id === parseInt(boardId))
         },
@@ -90,45 +93,37 @@ export const store = new Vuex.Store({
         },
         editCardContent(state, data) {
             data.card.content = data.textareaValue
+        },
+        moveCard(state, data) {
+            data.list.items.splice(data.movingCardIdsObj.cardIndex, 0, data.card)
+        },
+        deleteCard(state, data) {
+            data.list.items.splice(data.cardIndex, 1)
         }
     },
     actions: {
-        addNewBoard({commit}) {
-            const board = {
-                title: 'New board',
-                id: Date.now(),
-                description: 'New project ahead...',
-                team: [{name: 'AJ'}],
-                icon: 'mdi-poll',
-                color: 'primary lighten-1',
-                lists: [
-                    {   
-                        title: 'New List',
-                        items: [
-                            {content: 'New Item'},
-                        ]
-                    },
-                ]
-            }
+        addNewBoard({commit}, board) {
             commit('addNewBoard', board)
         },
-        addNewListToBoard({ getters, commit }, boardId) {
-            const data = {
-                board: getters.getBoard(boardId),
-                list: { title: 'New List', items: [] }
-            }
+        addNewListToBoard({ getters, commit }, data) {
+            data.board = getters.getBoard(data.boardId),
             commit('addNewListToBoard', data)
         },
-        addNewCardToList({ getters, commit }, idsObj) {
-            const data = {
-                list: getters.getList(idsObj),
-                cardItem: { content: 'new item...' }
-            }
+        addNewCardToList({ getters, commit }, data) {
+            data.list = getters.getList(data.idsObj),
             commit('addNewCardToList', data)
         },
         editCardContent({ getters, commit }, data) {
             data.card = getters.getListCardItem(data.idsObj)
             commit('editCardContent', data)
+        },
+        moveCard({ getters, commit }, data) {
+            data.list = getters.getList(data.movingCardIdsObj)
+            commit('moveCard', data)
+        },
+        deleteCard({ getters, commit }, data) {
+            data.list = getters.getList(data)
+            commit('deleteCard', data)
         }
     }
 })
