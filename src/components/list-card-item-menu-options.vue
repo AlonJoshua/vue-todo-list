@@ -130,7 +130,6 @@
                     <v-row>
                         <v-divider class="mx-4" />
                     </v-row>
-
                     <v-row no-gutters class="text-left">
                         <v-card-subtitle class="mt-4 pl-2 text-uppercase">
                             {{item.dialog.selectTitle}}
