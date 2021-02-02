@@ -23,7 +23,7 @@
                             clearable
                             clear-icon="mdi-close-circle"
                             label="Enter card title..."
-                            v-model="textareaValue"
+                            v-model="item.dialog.textareaValue"
                             background-color="white"
                         ></v-textarea>
                         <v-row>
@@ -127,7 +127,9 @@
                             </v-btn>
                         </v-col>
                     </v-row>
-                    <v-divider />
+                    <v-row>
+                        <v-divider class="mx-4" />
+                    </v-row>
                     <v-row no-gutters class="text-left">
                         <v-card-subtitle class="mt-4 pl-2 text-uppercase">
                             {{item.dialog.selectTitle}}
@@ -169,6 +171,116 @@
                 </v-container>
             </v-card>
 
+            <v-card v-if="item.name === 'Copy'">
+                <v-container fill-height>
+                    <v-row cols="12">
+                        <v-col cols="3"></v-col>
+                        <v-col cols="7">
+                            <v-card-title class="ml-3">
+                                {{item.dialog.cardTitle}}
+                            </v-card-title>
+                        </v-col>
+                        <v-col cols="2" align-self="center">
+                            <v-spacer />
+                            <v-btn
+                                text 
+                                plain
+                                :ripple="false"
+                                icon
+                                @click="item.dialog.active = false"
+                            >
+                                <v-icon right>mdi-close</v-icon>
+                            </v-btn>
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-divider class="mx-4" />
+                    </v-row>
+                    <v-row>
+                        <v-col class="my-2">
+                            {{item.dialog.textareaTitle}}
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col>
+                            <v-textarea
+                                light
+                                outlined
+                                dense
+                                auto-grow
+                                autofocus
+                                clearable
+                                clear-icon="mdi-close-circle"
+                                label="Enter card title..."
+                                v-model="item.dialog.textareaValue"
+                                background-color="white"
+                            ></v-textarea>
+                        </v-col>
+                    </v-row>
+                    <v-row no-gutters class="text-left">
+                        <v-card-subtitle class="mt-4 pl-2 text-uppercase">
+                            {{item.dialog.copyToTitle}}
+                        </v-card-subtitle>
+                    </v-row>
+                    <v-row class="px-2" no-gutters>
+                        <v-select
+                            :items="boardsTitles"
+                            label="Board"
+                            v-model="selectedBoardValue"
+                        ></v-select>
+                    </v-row>
+                    <v-row cols="12">
+                        <v-col cols="8">
+                            <v-select
+                                :items="selectedListsTitles"
+                                label="list"
+                                v-model="selectedListValue"
+                            ></v-select>
+                        </v-col>
+                        <v-col>
+                            <v-select
+                                :items="selectedListIndexes"
+                                label="position"
+                                v-model="selectedPosition"
+                            ></v-select>
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col>
+                            <v-btn
+                                class="success mb-2"
+                                @click="copyCard(item)"
+                            >
+                                {{copyBtn}}
+                            </v-btn>
+                        </v-col>
+                    </v-row>
+                </v-container>
+            </v-card>
+
+            <v-card v-if="item.name === 'Delete'">
+                <v-container>
+                    <v-row>
+                        <v-col class="text-center text-h6 mb-2">
+                            {{item.dialog.cardTitle}}
+                        </v-col>
+                    </v-row>
+                    <v-divider />
+                    <v-row class="ma-2">
+                        <v-col class="text-center">
+                            <v-btn color="error" @click="deleteCard(item)">
+                                {{item.dialog.deleteBtnTitle}}
+                            </v-btn>
+                        </v-col>
+                        <v-col class="text-center">
+                            <v-btn color="primary" @click="item.dialog.active = false">
+                                {{item.dialog.cancelBtnTitle}}
+                            </v-btn>
+                        </v-col>
+                    </v-row>
+                </v-container>
+            </v-card>
+
         </v-dialog>
     </div>
 </template>
@@ -186,19 +298,20 @@ export default {
     data() {
         return {
             isDialogClose: false,
-            textareaValue: null,
             selectedBoardValue: this.boardTitle,
             selectedListValue: this.listTitle,
             selectedPosition: this.cardIndex + 1,
             saveBtn: 'Save',
             moveBtn: 'Move',
+            copyBtn: 'Create Card',
             cardMenuOptions: {
                 selectedItemName: null,
                 items: [
                     { 
                         name: 'Edit Text', 
                         dialog: {
-                            active: false
+                            active: false,
+                            textareaValue: null,
                         }   
                     },
                     { 
@@ -219,13 +332,20 @@ export default {
                     { 
                         name: 'Copy',
                         dialog: {
-                            active: false
+                            active: false,
+                            cardTitle: 'Copy Card',
+                            textareaTitle: 'Title',
+                            textareaValue: this.content,
+                            copyToTitle: 'Copy to...'
                         }       
                     },
                     { 
                         name: 'Delete',
                         dialog: {
-                            active: false
+                            active: false,
+                            cardTitle: 'Delete Item?',
+                            deleteBtnTitle: 'Delete',
+                            cancelBtnTitle: 'Cancel'
                         }   
                     }
                 ]
@@ -234,12 +354,14 @@ export default {
     },
     methods: {
         updateCardText(item) {
-            const data = {
-                idsObj: this.idsObj,
-                textareaValue: this.textareaValue
+            if (item.dialog.textareaValue.length) {
+                const data = {
+                    idsObj: this.idsObj,
+                    textareaValue: item.dialog.textareaValue
+                }
+                this.$store.dispatch('editCardContent', data)
+                item.dialog.active = false
             }
-            this.$store.dispatch('editCardContent', data)
-            item.dialog.active = false
         },
         isCardLabel(label) {
             const card = this.itemCard
@@ -259,16 +381,25 @@ export default {
         },
         moveCard(item) {
             const data = {
-                movingCardIdsObj: {
-                    boardId: this.selectedBoard.id,
-                    listIndex: this.selectedBoard.lists.indexOf(this.selectedList),
-                    cardIndex: this.selectedPosition - 1
-                },
+                cardIdsObj: this.newIdsObj,
                 card: {...this.$store.getters.getListCardItem(this.idsObj)}
             }
-                this.$store.dispatch('deleteCard', this.idsObj)
-                this.$store.dispatch('moveCard', data)
-                item.dialog.active = false
+            this.$store.dispatch('deleteCard', this.idsObj)
+            this.$store.dispatch('insertCard', data)
+            item.dialog.active = false
+        },
+        copyCard(item) {
+            const data = {
+                cardIdsObj: this.newIdsObj,
+                card: {...this.$store.getters.getListCardItem(this.idsObj)}
+            }
+            data.card.content = item.dialog.textareaValue
+            this.$store.dispatch('insertCard', data)
+            item.dialog.active = false
+        },
+        deleteCard(item) {
+            this.$store.dispatch('deleteCard', this.idsObj)
+            item.dialog.active = false
         }
     },
     computed: {
@@ -277,6 +408,13 @@ export default {
                 boardId: this.boardId,
                 listIndex: this.listIndex,
                 cardIndex: this.cardIndex
+            }
+        },
+        newIdsObj() {
+            return {
+                boardId: this.selectedBoard.id,
+                listIndex: this.selectedBoard.lists.indexOf(this.selectedList),
+                cardIndex: this.selectedPosition - 1
             }
         },
         dialogActivationArray() {

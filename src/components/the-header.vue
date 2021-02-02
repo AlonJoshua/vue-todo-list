@@ -15,8 +15,8 @@
   
     <v-navigation-drawer 
       app 
-      hide-overlay 
-      v-model="drawer.state" 
+      temporary
+      v-model="drawer.state"
       class="primary lighten-3"
     >
       <v-list>

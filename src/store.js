@@ -94,8 +94,8 @@ export const store = new Vuex.Store({
         editCardContent(state, data) {
             data.card.content = data.textareaValue
         },
-        moveCard(state, data) {
-            data.list.items.splice(data.movingCardIdsObj.cardIndex, 0, data.card)
+        insertCard(state, data) {
+            data.list.items.splice(data.cardIdsObj.cardIndex, 0, data.card)
         },
         deleteCard(state, data) {
             data.list.items.splice(data.cardIndex, 1)
@@ -117,9 +117,9 @@ export const store = new Vuex.Store({
             data.card = getters.getListCardItem(data.idsObj)
             commit('editCardContent', data)
         },
-        moveCard({ getters, commit }, data) {
-            data.list = getters.getList(data.movingCardIdsObj)
-            commit('moveCard', data)
+        insertCard({ getters, commit }, data) {
+            data.list = getters.getList(data.cardIdsObj)
+            commit('insertCard', data)
         },
         deleteCard({ getters, commit }, data) {
             data.list = getters.getList(data)
