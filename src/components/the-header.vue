@@ -2,15 +2,24 @@
   <nav>
     <v-app-bar flat app color="rgba(0, 0, 0, .15)" class="text-center primary">
       <v-app-bar-nav-icon  @click.stop="drawer.state = !drawer.state" class="white--text" />
-      <v-spacer />
-        <v-btn text rounded class="white--text">
+        <v-btn text rounded :ripple="false" class="white--text ml-4">
           <v-icon left> {{drawer.icon}} </v-icon>
           <v-toolbar-title>
             {{ appName }}
           </v-toolbar-title>
         </v-btn>
       <v-spacer />
-      <v-avatar size="40" class="red white--text">AJ</v-avatar>
+        <v-btn
+          fab
+          dark
+          color="primary lighten-3 mr-4 mt-3"
+          @click="createNewBoard"
+        >
+          <v-icon large>mdi-plus</v-icon>
+        </v-btn>
+      <v-btn fab dark class="red mr-4 mt-3">
+        <h4>AJ</h4>
+      </v-btn>
     </v-app-bar>
   
     <v-navigation-drawer 
@@ -36,7 +45,7 @@
 </template>
 
 <script>
-
+import { bus } from '../main'
 export default {
   data() {
     return {
@@ -70,6 +79,9 @@ export default {
     }
   },
   methods: {
+    createNewBoard() {
+      bus.$emit('create-new-board')
+    },
     toRoute(route) {
       route.name === this.$route.name ? '' : this.$router.push(route)
     }

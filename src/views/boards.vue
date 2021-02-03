@@ -1,15 +1,5 @@
 <template>
   <v-main>
-    
-    <v-btn
-      fab
-      absolute
-      right
-      dark
-      color="primary lighten-3"
-    >
-      <v-icon large>mdi-plus</v-icon>
-    </v-btn>
     <v-container class="mt-4">
       <!-- title -->
       <v-card flat>
@@ -19,7 +9,6 @@
           <v-spacer />
         </v-card-title>
       </v-card>
-
       
       <!-- boards cards -->
       <v-container fluid class="mt-2">
@@ -146,6 +135,7 @@
 </template>
 
 <script>
+import { bus } from '../main'
 export default {
   components: {
   },
@@ -202,6 +192,9 @@ export default {
       return this.boards.map(board => board.title)
     },
   },
+  mounted() {
+    bus.$on('create-new-board', () => this.newBoardBtn.dialog = !this.newBoardBtn.dialog)
+  }
 }
 
 </script>
