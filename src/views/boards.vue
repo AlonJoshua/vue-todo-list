@@ -72,61 +72,20 @@
 
           <!-- new board card -->
           <v-col cols="4">
-            <v-dialog v-model="newBoardBtn.dialog" max-width="30vw">
-              <template v-slot:activator="{on, attrs}">
-                <v-card dark 
-                        height="11rem" 
-                        color="primary lighten-2"
-                        v-bind="attrs"
-                        v-on="on"
-                >
-                  <v-container fill-height>
-                    <v-spacer />
-                      <h2>{{newBoardBtn.title}}</h2>
-                      <v-icon right>{{newBoardBtn.icon}}</v-icon>
-                    <v-spacer />
-                  </v-container>
-                </v-card>
-              </template>
-
-              <v-form>
-                <v-card max-width="30vw">
-                  <v-container>
-                    <v-row>
-                      <v-col class="text-center">
-                        <v-text-field
-                          :rules="[ newBoardData.rules.exists, newBoardData.rules.required ]"
-                          label="Board Name"
-                          v-model="newBoardData.boardName"
-                          type="text"
-                          prepend-icon="mdi-clipboard-multiple-outline"
-                        >
-                        </v-text-field>
-                        <v-text-field
-                          label="Description"
-                          v-model="newBoardData.description"
-                          type="text"
-                          prepend-icon="mdi-text"
-                        >
-                        </v-text-field>
-                        <v-text-field
-                          label="Add Team Members"
-                          v-model="newBoardData.teamNembers"
-                          type="text"
-                          prepend-icon="mdi-account"
-                        >
-                        </v-text-field>
-                        <v-btn
-                          @click="createNewBoard"
-                        >
-                          {{newBoardBtn.submitText}}
-                        </v-btn>
-                      </v-col>
-                    </v-row>
-                  </v-container>
-                </v-card>
-              </v-form>
-            </v-dialog>
+            <v-card
+              block
+              dark 
+              height="11rem" 
+              color="primary lighten-2"
+              @click="createNewBoard"
+            >
+              <v-container fill-height>
+                <v-spacer />
+                  <h2>{{newBoardBtn.title}}</h2>
+                  <v-icon right>{{newBoardBtn.icon}}</v-icon>
+                <v-spacer />
+              </v-container>
+            </v-card>
           </v-col>
         </v-row>
       </v-container>
@@ -148,52 +107,17 @@ export default {
         icon: 'mdi-view-grid-plus',
         submitText: 'Create Board'
       },
-      newBoardData: {
-        boardName: '',
-        description: '',
-        teamMembers: [],
-        rules: {
-          exists: value => !this.boardsTitles.includes(value) || 'Board title already exists',
-          required: value => !!value || 'Required'
-        }
-      }
     }
   },
   methods: {
     createNewBoard() {
-      if (!this.boardsTitles.includes(this.newBoardData.boardName) &&
-          this.newBoardData.boardName.length) {
-        const board = {
-          title: this.newBoardData.boardName,
-          id: Date.now(),
-          description: this.newBoardData.description,
-          team: this.newBoardData.teamMembers,
-          icon: 'mdi-poll',
-          color: 'primary lighten-1',
-          lists: [
-              { title: 'To Do', items: [] },
-              { title: 'Doing', items: [] },
-              { title: 'Done', items: [] },
-          ]
-        }
-        this.$store.dispatch('addNewBoard', board)
-        this.newBoardBtn.dialog = false
-        this.newBoardData.boardName = ''
-        this.newBoardData.description = '',
-         this.newBoardData.teamMembers = []
-      } 
-    }
+      bus.$emit('create-new-board')
+    },
   },
   computed: {
     boards() {
       return this.$store.state.boards
-    },
-    boardsTitles() {
-      return this.boards.map(board => board.title)
-    },
-  },
-  mounted() {
-    bus.$on('create-new-board', () => this.newBoardBtn.dialog = !this.newBoardBtn.dialog)
+    }
   }
 }
 
