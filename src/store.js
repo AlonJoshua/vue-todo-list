@@ -28,11 +28,11 @@ export const store = new Vuex.Store({
                         items: [
                             {
                                 content: 'Get someone to review your project', 
-                                labels: [{ content: 'Shared with friends', color: 'purple'}]
+                                labels: []
                             },
                             {
                                 content: 'Find a developer position that push you forward',
-                                labels: [{ content: 'Very important', color: 'red'}]
+                                labels: []
                             },
                         ]
                     },
@@ -41,7 +41,7 @@ export const store = new Vuex.Store({
                         items: [
                             {
                                 content: 'Working hard on my programming skills',
-                                labels: [{ content: 'Long run', color: 'green'}, { content: 'Check daily', color: 'orange'}]
+                                labels: []
                             },
                         ]
                     },
@@ -50,7 +50,7 @@ export const store = new Vuex.Store({
                         items: [
                             {
                                 content: 'Finished GTD version 1.01',
-                                labels: [{ content: 'Treat lightly', color: 'blue'}]
+                                labels: []
                             },
                             {
                                 content: 'Becoming a developer',

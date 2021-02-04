@@ -3,7 +3,7 @@
         <v-dialog 
             v-for="item in cardMenuOptions.items" 
             :key="item.name"
-            v-model="item.dialog.active"
+            v-model="item.active"
             max-width="30vw"
         >
             <template v-slot:activator="{ on, attrs}">
@@ -12,35 +12,10 @@
                 </v-list-item>
             </template>
 
-            <v-container v-if="item.name === 'Edit Text'">
-                <v-row>
-                    <v-col>
-                        <v-textarea
-                            light
-                            solo
-                            auto-grow
-                            autofocus
-                            clearable
-                            clear-icon="mdi-close-circle"
-                            label="Enter card title..."
-                            v-model="item.dialog.textareaValue"
-                            background-color="white"
-                        ></v-textarea>
-                        <v-row>
-                            <v-spacer />
-                                <v-btn
-                                    class="success mb-2"
-                                    @click="updateCardText(item)"
-                                >
-                                    {{saveBtn}}
-                                </v-btn>
-                            <v-spacer />
-                        </v-row>
-                    </v-col>
-                </v-row>
-            </v-container>
+            <editText v-if="item.name === 'Edit Text'" :data="{item, idsObj}" />
+            <editLabels v-if="item.name === 'Edit Labels'" :data="{item, idsObj}"/>
 
-            <v-card v-if="item.name === 'Edit Labels'">
+            <!-- <v-card v-if="item.name === 'Edit Labels'">
                 <v-container>
                     <v-row>
                         <v-col>
@@ -103,7 +78,7 @@
                         </v-col>
                     </v-row>
                 </v-container>
-            </v-card>
+            </v-card> -->
 
             <v-card v-if="item.name === 'Move'">
                 <v-container fill-height>
@@ -285,7 +260,14 @@
 </template>
 
 <script>
+import { bus } from '../main'
+import editText from './menu-options/edit-text'
+import editLabels from './menu-options/edit-labels'
 export default {
+    components: {
+        editText,
+        editLabels
+    },
     props: [
         'content', 
         'cardIndex',
@@ -296,28 +278,21 @@ export default {
     ],
     data() {
         return {
-            isDialogClose: false,
             selectedBoardValue: this.boardTitle,
             selectedListValue: this.listTitle,
             selectedPosition: this.cardIndex + 1,
-            saveBtn: 'Save',
             moveBtn: 'Move',
             copyBtn: 'Create Card',
             cardMenuOptions: {
-                selectedItemName: null,
                 items: [
                     { 
                         name: 'Edit Text', 
-                        dialog: {
-                            active: false,
-                            textareaValue: null,
-                        }   
+                        active: false,
                     },
                     { 
                         name: 'Edit Labels',
                         dialog: {
                             active: false,
-                            cardTitle: 'Labels'
                         }   
                     },
                     { 
@@ -352,16 +327,6 @@ export default {
         }
     },
     methods: {
-        updateCardText(item) {
-            if (item.dialog.textareaValue.length) {
-                const data = {
-                    idsObj: this.idsObj,
-                    textareaValue: item.dialog.textareaValue
-                }
-                this.$store.dispatch('editCardContent', data)
-                item.dialog.active = false
-            }
-        },
         isCardLabel(label) {
             const card = this.itemCard
             if (card.labels.includes(label)) {
@@ -417,7 +382,7 @@ export default {
             }
         },
         dialogActivationArray() {
-            return this.cardMenuOptions.items.map(item => item.dialog.active)
+            return this.cardMenuOptions.items.map(item => item.active)
         },
         itemCard() {
             return this.$store.getters.getListCardItem(this.idsObj)
@@ -453,6 +418,11 @@ export default {
                 this.$emit('close-menu');
             }
         }
+    },
+    mounted() {
+        bus.$on('close-dialog', (data) => {
+            data.item.active = false
+        })
     }
 }
 </script>

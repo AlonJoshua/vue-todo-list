@@ -200,6 +200,13 @@ export default {
     },
     demoMode() {
       // load demo user
+      const exampleBoard = this.$store.getters.getBoard(123)
+      const labels = this.$store.getters.getLabels
+      exampleBoard.lists[0].items[0].labels.push(labels[4])
+      exampleBoard.lists[0].items[1].labels.push(labels[3])
+      exampleBoard.lists[1].items[0].labels.push(labels[0])
+      exampleBoard.lists[1].items[0].labels.push(labels[2])
+      exampleBoard.lists[2].items[0].labels.push(labels[5])
       this.login()
     },
     login() {
