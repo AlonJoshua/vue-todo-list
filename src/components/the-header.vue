@@ -116,14 +116,14 @@ export default {
             route: {name: 'boards'}
           },
           { 
-            title: 'Statistics', 
-            icon: 'mdi-chart-bar',
-            route: {name: 'statistics'} 
-          },
-          { 
             title: 'About', 
             icon: 'mdi-information-outline',
             route: {name: 'about'}
+          },
+          { 
+            title: 'settings', 
+            icon: 'mdi-chart-bar',
+            route: {name: 'settings'} 
           },
           { 
             title: 'Sign out', 

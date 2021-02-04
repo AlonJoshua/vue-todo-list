@@ -6,20 +6,20 @@ Vue.use(Vuex)
 export const store = new Vuex.Store({
     state: {
         labels: [
-            { content: 'Label...', color: 'green'},
-            { content: 'Label...', color: 'yellow'},
-            { content: 'Label...', color: 'orange'},
-            { content: 'Label...', color: 'red'},
-            { content: 'Label...', color: 'purple'},
-            { content: 'Label...', color: 'blue'},
-            { content: 'Label...', color: 'indigo'}
+            { content: 'Long run', color: 'green'},
+            { content: 'Watch closely', color: 'yellow'},
+            { content: 'Check daily', color: 'orange'},
+            { content: 'Very important', color: 'red'},
+            { content: 'Shared with friends', color: 'purple'},
+            { content: 'Treat lightly', color: 'blue'},
+            { content: 'Maybe later', color: 'indigo'}
         ],
         boards: [
             { 
-                title: 'Alon GTD project',
+                title: 'Default GTD project',
                 id: 123,
-                description: 'Building a boards app',
-                team: [{name: 'AJ'}, {name: 'KD'}],
+                description: 'Text that Describe this project, click to go inside this board.',
+                team: [{firstName: 'Iron', LastName: 'Man' }, {firstName: 'Dr', LastName: 'Octopus'}],
                 icon: 'mdi-poll',
                 color: 'primary lighten-1',
                 lists: [
@@ -27,12 +27,12 @@ export const store = new Vuex.Store({
                         title: 'To Do',
                         items: [
                             {
-                                content: 'Build a todo list', 
-                                labels: []
+                                content: 'Get someone to review your project', 
+                                labels: [{ content: 'Shared with friends', color: 'purple'}]
                             },
                             {
-                                content: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Totam nihil quis consequuntur asperiores autem fuga porro aspernatur voluptates iste, inventore praesentium possimus ullam et assumenda consequatur deserunt, numquam accusamus vero?',
-                                labels: []
+                                content: 'Find a developer position that push you forward',
+                                labels: [{ content: 'Very important', color: 'red'}]
                             },
                         ]
                     },
@@ -40,8 +40,8 @@ export const store = new Vuex.Store({
                         title: 'Doing', 
                         items: [
                             {
-                                content: 'Working on cards style',
-                                labels: []
+                                content: 'Working hard on my programming skills',
+                                labels: [{ content: 'Long run', color: 'green'}, { content: 'Check daily', color: 'orange'}]
                             },
                         ]
                     },
@@ -49,11 +49,11 @@ export const store = new Vuex.Store({
                         title: 'Done', 
                         items: [
                             {
-                                content: 'Writing the lists state',
-                                labels: []
+                                content: 'Finished GTD version 1.01',
+                                labels: [{ content: 'Treat lightly', color: 'blue'}]
                             },
                             {
-                                content: 'Finish cards style',
+                                content: 'Becoming a developer',
                                 labels: []
                             }
                         ]
