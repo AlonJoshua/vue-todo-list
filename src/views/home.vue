@@ -14,7 +14,8 @@
                 {{homeSubtitles}}
               </v-card-subtitle>
               <v-row class="my-3" cols="12">
-                <v-col cols="5">
+                <v-col cols="2"></v-col>
+                <v-col cols="4">
                   <v-dialog
                     persistent
                     max-width="40vw"
@@ -28,7 +29,6 @@
                         v-bind="attrs"
                         v-on="on"
                         color="blue lighten-3" 
-                        class="ml-4"
                       >
                         {{homeBtns.signIn.text}}
                       </v-btn>
@@ -72,8 +72,7 @@
                     </v-form>
                   </v-dialog>
                 </v-col>
-                <v-col cols="2"></v-col>
-                <v-col cols="5">
+                <v-col cols="4">
                   <v-dialog
                     persistent
                     max-width="40vw"
@@ -87,7 +86,6 @@
                         v-bind="attrs"
                         v-on="on"
                         color="blue lighten-3" 
-                        class="ml-n4"
                       >
                         {{homeBtns.register.text}}
                       </v-btn>
@@ -139,6 +137,7 @@
                     </v-form>
                   </v-dialog>
                 </v-col>
+                <v-col cols="2"></v-col>
               </v-row>
               <v-row no-gutters class="mt-1">
                 <v-col>
