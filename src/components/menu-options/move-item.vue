@@ -69,15 +69,14 @@
 <script>
 import { bus } from '../../main'
 export default {
-    props: [
-        'data',
-        'content', 
-        'cardIndex',
-        'listIndex',
-        'boardId',
-        'boardTitle',
-        'listTitle'
-    ],
+    props: {
+        data: {},
+        cardIndex: {},
+        listIndex: {},
+        boardId: {},
+        boardTitle: {default: 'Default GTD project'},
+        listTitle: {default: 'To Do'}
+    },
     data() {
         return {
             cardTitle: 'Move Card',
@@ -85,13 +84,17 @@ export default {
             moveBtn: 'Move',
             selectedBoardValue: this.boardTitle,
             selectedListValue: this.listTitle,
-            selectedPosition: this.cardIndex + 1,
+            selectedPosition: 0,
         }
     },
     methods: {
         moveCard() {
             const moveData = {
-                cardIdsObj: this.newIdsObj,
+                cardIdsObj: {
+                    boardId: this.selectedBoard.id,
+                    listIndex: this.selectedBoard.lists.indexOf(this.selectedList),
+                    cardIndex: this.selectedPosition - 1
+                },
                 card: {...this.$store.getters.getListCardItem(this.data.idsObj)}
             }
             this.$store.dispatch('deleteCard', this.data.idsObj)
@@ -103,12 +106,8 @@ export default {
         }
     },
     computed: {
-        newIdsObj() {
-            return {
-                boardId: this.selectedBoard.id,
-                listIndex: this.selectedBoard.lists.indexOf(this.selectedList),
-                cardIndex: this.selectedPosition - 1
-            }
+        board() {
+            return this.$store.getters.getBoard(this.boardId)
         },
         boards() {
             return this.$store.getters.getBoardsList
@@ -130,7 +129,7 @@ export default {
         },
         selectedBoardId() {
             return this.boards.find(board => board.title === this.selectedBoardValue).id
-        },
+        }
     }
 }
 </script>

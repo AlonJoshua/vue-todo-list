@@ -17,7 +17,7 @@
                     <v-spacer />
                         <v-btn
                             class="success mb-2"
-                            @click="updateCardText"
+                            @click="editController"
                         >
                             {{saveBtn}}
                         </v-btn>
@@ -39,6 +39,19 @@ export default {
         }
     },
     methods: {
+        editController() {
+            switch(this.data.type) {
+                case 'card':
+                    this.updateCardText()
+                break;
+                case 'list':
+                    this.updateListTitle()
+                break;
+                default:
+                    console.log('item type is undefined')
+
+            }
+        },
         updateCardText() {
             if (this.textareaValue.length) {
                 const newData = {
@@ -46,6 +59,16 @@ export default {
                     textareaValue: this.textareaValue
                 }
                 this.$store.dispatch('editCardContent', newData)
+                bus.$emit('close-dialog', this.data)
+            }
+        },
+        updateListTitle() {
+            if (this.textareaValue.length) {
+                const newData = {
+                    idsObj: this.data.idsObj,
+                    textareaValue: this.textareaValue
+                }
+                this.$store.dispatch('editListTitle', newData)
                 bus.$emit('close-dialog', this.data)
             }
         },

@@ -2,7 +2,14 @@
   <nav>
     <v-app-bar flat app color="rgba(0, 0, 0, .15)" class="text-center primary">
       <v-app-bar-nav-icon  @click.stop="drawer.state = !drawer.state" class="white--text" />
-        <v-btn text rounded :ripple="false" class="white--text ml-4">
+        <v-btn 
+          text 
+          rounded 
+          :ripple="false" 
+          class="white--text ml-4"
+          @click="routeHome"
+        
+        >
           <v-icon left> {{drawer.icon}} </v-icon>
           <v-toolbar-title>
             {{ appName }}
@@ -121,11 +128,6 @@ export default {
             route: {name: 'about'}
           },
           { 
-            title: 'settings', 
-            icon: 'mdi-chart-bar',
-            route: {name: 'settings'} 
-          },
-          { 
             title: 'Sign out', 
             icon: 'mdi-logout-variant',
             route: {name: 'home'}
@@ -165,6 +167,11 @@ export default {
     },
     toRoute(route) {
       route.name === this.$route.name ? '' : this.$router.push(route)
+    },
+    routeHome() {
+      this.$router.push({name: 'boards'})
+        .then(() => console.log('resolved'))
+        .catch(e => console.log('error: ', e))
     }
   },
   computed: {
