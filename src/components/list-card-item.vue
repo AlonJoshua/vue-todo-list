@@ -27,7 +27,7 @@
                                     <v-menu :offset-x="true" v-model="menu">
                                         <template v-slot:activator="{ on }">
                                             <v-btn
-                                                class="mt-4"
+                                                class="mt-4 mb-2"
                                                 text 
                                                 icon
                                                 v-on="on"
@@ -40,7 +40,13 @@
                                             <v-list-item-group>
 
                                                 <!-- menu option component -->
-                                                <menu-options v-bind="$props" @close-menu="closeMenu"></menu-options>
+                                                <options-menu 
+                                                    v-bind="$props"
+                                                    :type="type"
+                                                    :menuItems="cardMenuItems"
+                                                    @close-menu="closeMenu"
+                                                >
+                                                </options-menu>
                                             </v-list-item-group>
                                         </v-list>
                                     </v-menu>
@@ -49,7 +55,7 @@
                             </v-row>
                         <v-row>
                             <v-list-item-content>
-                                {{content}}
+                                {{itemCard.title}}
                             </v-list-item-content>
                             
                         </v-row>
@@ -61,23 +67,43 @@
 </template>
 
 <script>
-import menuOptions from '../components/list-card-item-menu-options'
+import optionsMenu from '../components/options-menu'
 
 export default {
     components: {
-        menuOptions
+        optionsMenu,
     },
     props: [
-        'content', 
         'cardIndex',
         'listIndex',
-        'boardId',
-        'boardTitle',
-        'listTitle'
+        'boardId'
     ],
     data() {
         return {
-            menu: false
+            menu: false,
+            type: 'card',
+            cardMenuItems: [
+                { 
+                    name: 'Edit title', 
+                    active: false,
+                },
+                { 
+                    name: 'Edit Labels',
+                    active: false,
+                },
+                { 
+                    name: 'Move',
+                    active: false,
+                },
+                { 
+                    name: 'Copy',
+                    active: false,
+                },
+                { 
+                    name: 'Delete',
+                    active: false,
+                }
+            ]
         }
     },
     methods: {
@@ -85,7 +111,7 @@ export default {
             this.menu = false
         },
         onDrag() {
-            console.log('drag event')
+            // console.log('drag event')
         }
     },
     computed: {

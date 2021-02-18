@@ -25,11 +25,6 @@ const routes = [
     name: 'about',
     component: () => import(/*webpackChunkName: about */ '../views/about')
   },
-  {
-    path: '/settings',
-    name: 'settings',
-    component: () => import(/*webpackChunkName: settings */ '../views/settings')
-  }
 ]
 
 const router = new VueRouter({

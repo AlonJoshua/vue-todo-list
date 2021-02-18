@@ -162,7 +162,7 @@ export default {
   data() {
     return {
       homeTitle: 'Welcome to GTD',
-      homeSubtitles: 'Organize projects and Optimize your workflow',
+      homeSubtitles: 'Organize projects and optimize your workflow',
       homeBtns: {
         signIn: {
           text: 'Sign In',
@@ -200,14 +200,21 @@ export default {
     },
     demoMode() {
       // load demo user
-      const exampleBoard = this.$store.getters.getBoard(123)
-      const labels = this.$store.getters.getLabels
-      exampleBoard.lists[0].items[0].labels.push(labels[4])
-      exampleBoard.lists[0].items[1].labels.push(labels[3])
-      exampleBoard.lists[1].items[0].labels.push(labels[0])
-      exampleBoard.lists[1].items[0].labels.push(labels[2])
-      exampleBoard.lists[2].items[0].labels.push(labels[5])
-      this.login()
+      const demoMode = this.$store.getters.demoModeState
+      console.log(demoMode)
+      if (demoMode) {
+        this.login()
+      } else {
+        const exampleBoard = this.$store.getters.getBoard(123)
+        const labels = this.$store.getters.getLabels
+        exampleBoard.lists[0].items[0].labels.push(labels[4])
+        exampleBoard.lists[0].items[1].labels.push(labels[3])
+        exampleBoard.lists[1].items[0].labels.push(labels[0])
+        exampleBoard.lists[1].items[0].labels.push(labels[2])
+        exampleBoard.lists[2].items[0].labels.push(labels[5])
+        this.$store.dispatch('demoModeToggle')
+        this.login()
+      }
     },
     login() {
       this.$router.push({name: 'boards'})

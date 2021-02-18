@@ -90,20 +90,19 @@
 <script>
 import { bus } from '../../main'
 export default {
-    props: [
-        'data',
-        'content', 
-        'cardIndex',
-        'listIndex',
-        'boardId',
-        'boardTitle',
-        'listTitle'
-    ],
+    props: {
+        data: {},
+        cardIndex: {},
+        listIndex: {},
+        boardId: {},
+        boardTitle: {default: 'Default GTD project'},
+        listTitle: {default: 'To Do'}
+    },
     data() {
         return {
             cardTitle: 'Copy Card',
             textareaTitle: 'Title',
-            textareaValue: this.content,
+            textareaValue: '',
             copyToTitle: 'Copy to...',
             copyBtn: 'Create Card',
             selectedBoardValue: this.boardTitle,
@@ -117,7 +116,7 @@ export default {
                 cardIdsObj: this.newIdsObj,
                 card: {...this.$store.getters.getListCardItem(this.data.idsObj)}
             }
-            copyData.card.content = this.textareaValue
+            copyData.card.title = this.textareaValue
             this.$store.dispatch('insertCard', copyData)
             bus.$emit('close-dialog', this.data)
         },
@@ -135,6 +134,9 @@ export default {
         },
         boards() {
             return this.$store.getters.getBoardsList
+        },
+        card() {
+            return this.$store.getters.getBoard(this.boardId).lists[this.listIndex].items[this.cardIndex]
         },
         boardsTitles() {
             return this.boards.map(board => board.title)
@@ -154,6 +156,9 @@ export default {
         selectedBoardId() {
             return this.boards.find(board => board.title === this.selectedBoardValue).id
         }
+    },
+    mounted() {
+        this.textareaValue = this.card.title
     }
 }
 </script>

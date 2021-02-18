@@ -1,7 +1,7 @@
 <template>
     <div class="menu-options">
         <v-dialog 
-            v-for="item in cardMenuOptions.items" 
+            v-for="item in menuItems"
             :key="item.name"
             v-model="item.active"
             max-width="30vw"
@@ -12,12 +12,11 @@
                 </v-list-item>
             </template>
 
-            <editText v-if="item.name === 'Edit Text'" :data="{item, idsObj}" />
+            <editText v-if="item.name === 'Edit title'" :data="{item, idsObj, type}" />
             <editLabels v-if="item.name === 'Edit Labels'" :data="{item, idsObj}" />
             <moveItem v-if="item.name === 'Move'" v-bind="$props" :data="{item, idsObj}" />
             <copyItem v-if="item.name === 'Copy'" v-bind="$props" :data="{item, idsObj}" />
-            <deleteItem  v-if="item.name === 'Delete'" :data="{item, idsObj}" />
-
+            <deleteItem v-if="item.name === 'Delete'" :data="{item, idsObj, type}" />
         </v-dialog>
     </div>
 </template>
@@ -38,41 +37,12 @@ export default {
         copyItem,
         DeleteItem
     },
-    props: [
-        'content', 
-        'cardIndex',
-        'listIndex',
-        'boardId',
-        'boardTitle',
-        'listTitle'
-    ],
-    data() {
-        return {
-            cardMenuOptions: {
-                items: [
-                    { 
-                        name: 'Edit Text', 
-                        active: false,
-                    },
-                    { 
-                        name: 'Edit Labels',
-                        active: false,
-                    },
-                    { 
-                        name: 'Move',
-                        active: false,
-                    },
-                    { 
-                        name: 'Copy',
-                        active: false,
-                    },
-                    { 
-                        name: 'Delete',
-                        active: false,
-                    }
-                ]
-            }
-        }
+    props: {
+        type: {},
+        cardIndex: {},
+        listIndex: {},
+        boardId: {},
+        menuItems: {}
     },
     computed: {
         idsObj() {
@@ -83,7 +53,7 @@ export default {
             }
         },
         dialogActivationArray() {
-            return this.cardMenuOptions.items.map(item => item.active)
+            return this.menuItems.map(item => item.active)
         },
     },
     watch: {

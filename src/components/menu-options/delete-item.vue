@@ -9,7 +9,7 @@
             <v-divider />
             <v-row class="ma-2">
                 <v-col class="text-center">
-                    <v-btn color="error" @click="deleteCard">
+                    <v-btn color="error" @click="deleteController">
                         {{deleteBtnTitle}}
                     </v-btn>
                 </v-col>
@@ -35,8 +35,29 @@ export default {
         }
     },
     methods: {
+        deleteController() {
+            console.log(this.data.type)
+            switch(this.data.type) {
+                case 'card':
+                    this.deleteCard()
+                break;
+                case 'list':
+                    this.deleteList()
+                break;
+                case 'board':
+                    this.deleteBoard()
+                break;
+                default:
+                    console.log('item type it undefined')
+
+            }
+        },
         deleteCard() {
             this.$store.dispatch('deleteCard', this.data.idsObj)
+            bus.$emit('close-dialog', this.data)
+        },
+        deleteList() {
+            this.$store.dispatch('deleteList', this.data.idsObj)
             bus.$emit('close-dialog', this.data)
         },
         closeDialog() {

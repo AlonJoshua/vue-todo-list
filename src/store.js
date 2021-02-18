@@ -5,6 +5,7 @@ Vue.use(Vuex)
 
 export const store = new Vuex.Store({
     state: {
+        demoMode: false,
         labels: [
             { content: 'Long run', color: 'green'},
             { content: 'Watch closely', color: 'yellow'},
@@ -18,7 +19,7 @@ export const store = new Vuex.Store({
             { 
                 title: 'Default GTD project',
                 id: 123,
-                description: 'Text that Describe this project, click to go inside this board.',
+                description: 'Text that describes this project, click to check this board.',
                 team: [{firstName: 'Iron', LastName: 'Man' }, {firstName: 'Dr', LastName: 'Octopus'}],
                 icon: 'mdi-poll',
                 color: 'primary lighten-1',
@@ -27,11 +28,11 @@ export const store = new Vuex.Store({
                         title: 'To Do',
                         items: [
                             {
-                                content: 'Get someone to review your project', 
+                                title: 'Get someone to review your project', 
                                 labels: []
                             },
                             {
-                                content: 'Find a developer position that push you forward',
+                                title: 'Find a developer position that push you forward',
                                 labels: []
                             },
                         ]
@@ -40,7 +41,7 @@ export const store = new Vuex.Store({
                         title: 'Doing', 
                         items: [
                             {
-                                content: 'Working hard on my programming skills',
+                                title: 'Working hard on my programming skills',
                                 labels: []
                             },
                         ]
@@ -49,11 +50,11 @@ export const store = new Vuex.Store({
                         title: 'Done', 
                         items: [
                             {
-                                content: 'Finished GTD version 1.01',
+                                title: 'Finished GTD version 1.01',
                                 labels: []
                             },
                             {
-                                content: 'Becoming a developer',
+                                title: 'Becoming a developer',
                                 labels: []
                             }
                         ]
@@ -63,6 +64,9 @@ export const store = new Vuex.Store({
         ],
     },
     getters: {
+        demoModeState: (state) => {
+            return state.demoMode
+        },
         getBoardsList: (state) => {
             return state.boards
         },
@@ -82,17 +86,26 @@ export const store = new Vuex.Store({
         }
     },
     mutations: {
+        demoModeToggle(state) {
+            state.demoMode = !state.demoMode
+        },
         addNewBoard(state, board) {
             state.boards.push(board)
         },
         addNewListToBoard(state, data) {
             data.board.lists.push(data.list)
         },
+        editListTitle(state, data) {
+            data.list.title = data.textareaValue
+        },
         addNewCardToList(state, data) {
             data.list.items.push(data.cardItem)
         },
+        deleteList(state, data) {
+            data.board.lists.splice(data.listIndex, 1)
+        },
         editCardContent(state, data) {
-            data.card.content = data.textareaValue
+            data.card.title = data.textareaValue
         },
         insertCard(state, data) {
             data.list.items.splice(data.cardIdsObj.cardIndex, 0, data.card)
@@ -102,16 +115,27 @@ export const store = new Vuex.Store({
         }
     },
     actions: {
+        demoModeToggle({ commit }) {
+            commit('demoModeToggle')
+        },
         addNewBoard({commit}, board) {
             commit('addNewBoard', board)
         },
         addNewListToBoard({ getters, commit }, data) {
-            data.board = getters.getBoard(data.boardId),
+            data.board = getters.getBoard(data.boardId)
             commit('addNewListToBoard', data)
         },
+        editListTitle({ getters, commit }, data) {
+            data.list = getters.getList(data.idsObj)
+            commit('editListTitle', data)
+        },
         addNewCardToList({ getters, commit }, data) {
-            data.list = getters.getList(data.idsObj),
+            data.list = getters.getList(data.idsObj)
             commit('addNewCardToList', data)
+        },
+        deleteList({ getters, commit }, data) {
+            data.board = getters.getBoard(data.boardId)
+            commit('deleteList', data)
         },
         editCardContent({ getters, commit }, data) {
             data.card = getters.getListCardItem(data.idsObj)
